@@ -11,7 +11,7 @@ const CONFIG = {
     u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
   ],
   TIMEOUT_MS: 6000,
-  QUOTE_BRON_VERMELDEN: false, // zet op true als BrainyQuote bronvermelding vraagt
+  QUOTE_BRON_VERMELDEN: true, // kleine bronvermelding onderaan; zet op false om die weg te laten
   GOOGLE_CLIENT_ID: '605238330372-81mk6hhbod8f1gcpinbfm1ibeadncv33.apps.googleusercontent.com',
 };
 
@@ -104,7 +104,24 @@ function kledingAdvies(w) {
 }
 
 /* ---------- quotes en nieuws ---------- */
+let feedsBelofte = null;
+function haalFeeds() {
+  if (!feedsBelofte) {
+    feedsBelofte = fetch('data/feeds.json?t=' + Date.now(), { signal: AbortSignal.timeout(6000) })
+      .then(r => { if (!r.ok) throw new Error('geen feeds.json'); return r.json(); });
+  }
+  return feedsBelofte;
+}
+async function uitFeedsBestand(sleutel) {
+  try {
+    const f = await haalFeeds();
+    if (f && Array.isArray(f[sleutel]) && f[sleutel].length) { STAAT.feedDatum = f.datum || ''; return f[sleutel]; }
+  } catch (e) { /* bestand ontbreekt: rechtstreeks proberen */ }
+  return null;
+}
 async function haalQuotes() {
+  const bestand = await uitFeedsBestand('quotes');
+  if (bestand) return bestand.map(q => [q.tekst, q.auteur || '']);
   const xml = parseXml(await haalOp(CONFIG.QUOTE_FEED));
   const uit = [];
   xml.querySelectorAll('item').forEach(it => {
@@ -122,12 +139,14 @@ function inkorten(t, max) {
   return uit.length > max ? uit.slice(0, max) : uit;
 }
 async function haalNieuws(n = 2) {
-  const xml = parseXml(await haalOp(CONFIG.NIEUWS_FEED));
+  const bestand = await uitFeedsBestand('nieuws');
+  if (bestand) return bestand.slice(0, n).map(x => [x.titel, x.samenvatting]);
+  const xml = parseXml(await haalOp(CONFIG.NIEUWS_FEED)); // de VRT-feed is een Atom-feed (entry/summary); RSS (item/description) kan ook
   const uit = [];
-  for (const it of xml.querySelectorAll('item')) {
+  for (const it of xml.querySelectorAll('entry, item')) {
     const titel = platteTekst(it.querySelector('title')?.textContent || '');
-    const besch = platteTekst(it.querySelector('description')?.textContent || '');
-    if (titel) uit.push([titel, besch]);
+    const besch = platteTekst((it.querySelector('summary') || it.querySelector('description'))?.textContent || '');
+    if (titel && besch.length >= 60) uit.push([titel, besch]);
     if (uit.length === n) break;
   }
   if (!uit.length) throw new Error('geen nieuws');
@@ -261,7 +280,7 @@ function weerHtml(w) {
   return '<div class="wx">' + kop + '<div class="wxtop"><div class="temp">' + w.tmax + '°<span> / ' + w.tmin + '°</span></div><div>' + esc(weerOmschrijving(w)) +
     '</div><div><span class="tag">Wat trek je aan</span><br>' + esc(kledingAdvies(w)) + '</div></div><div class="hours">' + uren + '</div></div>';
 }
-const quoteHtml = ([t, a]) => '<div class="quote"><q>' + esc(t) + '</q><small>— ' + esc(a) + '</small></div>';
+const quoteHtml = ([t, a, bron]) => '<div class="quote"><q>' + esc(t) + '</q><small>— ' + esc(a) + (bron && CONFIG.QUOTE_BRON_VERMELDEN ? ' · BrainyQuote.com' : '') + '</small></div>';
 function nieuwsHtml(items) {
   if (!items || !items.length) return '';
   const art = items.map(([titel, besch], i) => {
@@ -351,6 +370,17 @@ async function haalTaken(token) {
   }));
   return alle.sort((a, b) => (a.due || '9999').localeCompare(b.due || '9999'));
 }
+function oudMelding() {
+  const gisteren = new Date(); gisteren.setDate(gisteren.getDate() - 1);
+  return STAAT.feedDatum && STAAT.feedDatum < isoDatum(gisteren)
+    ? 'Nieuws en quotes zijn van ' + datumKort(STAAT.feedDatum) + ' (de automatische update staat stil).' : '';
+}
+function statusTekst(mislukt) {
+  const m = [];
+  if (mislukt && mislukt.length) m.push('Niet gelukt: ' + mislukt.join(', ') + '.');
+  if (oudMelding()) m.push(oudMelding());
+  return m.join(' ');
+}
 async function laadGoogle(token, mislukt) {
   status('Agenda en taken ophalen…');
   const fouten = [];
@@ -361,8 +391,7 @@ async function laadGoogle(token, mislukt) {
   if (ag) STAAT.agenda = ag;
   if (tk) STAAT.todos = tk;
   teken();
-  const meldingen = [];
-  if (mislukt && mislukt.length) meldingen.push('Niet gelukt: ' + mislukt.join(', ') + '.');
+  const meldingen = [statusTekst(mislukt)].filter(Boolean);
   if (fouten.length) meldingen.push('Google: ' + fouten.join('; ') + '.');
   status(meldingen.join(' '));
 }
@@ -385,7 +414,7 @@ function initGoogle() {
 initGoogle.n = 0;
 
 /* ---------- krant bouwen ---------- */
-const STAAT = { start: null, weer: null, nieuws: null, q1: null, q2: null, sud: null, ten: null, agenda: {}, todos: [], mislukt: [], token: null, tokenTot: 0 };
+const STAAT = { start: null, weer: null, nieuws: null, q1: null, q2: null, sud: null, ten: null, agenda: {}, todos: [], mislukt: [], token: null, tokenTot: 0, feedDatum: '' };
 function status(t) { $('status').textContent = t || ''; }
 function schaal() {
   const f = Math.min(1, (window.innerWidth - 16) / 793.7);
@@ -395,7 +424,6 @@ function schaal() {
 function teken() {
   const S = STAAT, start = S.start;
   const datumtekst = DAGEN[maandagEerst(start)] + ' ' + start.getDate() + ' ' + MAANDEN[start.getMonth()] + ' ' + start.getFullYear();
-  const bron = CONFIG.QUOTE_BRON_VERMELDEN ? ' · quotes via BrainyQuote.com' : '';
   $('stage').innerHTML =
     '<section class="sheet"><header class="mast"><h1>De Ochtendkrant</h1><div class="strip">' + esc(datumtekst) + '</div></header>' +
     quoteHtml(S.q1) + weerHtml(S.weer) + agendaHtml(start, S.agenda) + nieuwsHtml(S.nieuws) + '</section>' +
@@ -403,7 +431,7 @@ function teken() {
     '<div class="row1"><div class="sec" style="margin-bottom:0"><h2>To-do’s</h2>' + todosHtml(S.todos) + '</div>' +
     '<div><div class="sec" style="margin-bottom:0"><h2>Sudoku</h2></div>' + sudokuHtml(S.sud.puz) + '</div></div>' +
     '<div class="row2"><div class="sec" style="margin-bottom:0"><h2>Tenten en bomen</h2></div>' + tentenHtml(S.ten) + '</div>' +
-    '<div class="sol">' + S.sud.opl + ' · ' + tentenOpl(S.ten) + esc(bron) + '</div></section>';
+    '<div class="sol">' + S.sud.opl + ' · ' + tentenOpl(S.ten) + '</div></section>';
   schaal();
 }
 
@@ -418,6 +446,7 @@ async function bouwKrant() {
   const rng = maakRng(Math.floor(Date.UTC(start.getFullYear(), start.getMonth(), start.getDate()) / 86400000));
   const mislukt = [];
   status('Krant wordt gemaakt…');
+  feedsBelofte = null; STAAT.feedDatum = '';
 
   const limiet = () => new Promise((_, nee) => setTimeout(() => nee(new Error('time-out')), 15000));
   const wacht = (naam, p) => Promise.race([p, limiet()]).catch(() => { mislukt.push(naam); return null; });
@@ -428,8 +457,8 @@ async function bouwKrant() {
   const dagnr = Math.floor(start.getTime() / 86400000);
   Object.assign(STAAT, {
     start, weer, nieuws, mislukt,
-    q1: (quotes && quotes[0]) || SPREUKEN[dagnr % SPREUKEN.length],
-    q2: (quotes && quotes[1]) || SPREUKEN[(dagnr + 3) % SPREUKEN.length],
+    q1: (quotes && quotes[0] && [...quotes[0], true]) || SPREUKEN[dagnr % SPREUKEN.length],
+    q2: (quotes && quotes[1] && [...quotes[1], true]) || SPREUKEN[(dagnr + 3) % SPREUKEN.length],
     sud: maakSudoku(rng), ten: maakTenten(rng),
   });
   if (demo) {
@@ -439,7 +468,7 @@ async function bouwKrant() {
   }
   teken();
   if (!demo && STAAT.token && Date.now() < STAAT.tokenTot) { await laadGoogle(STAAT.token, mislukt); return; }
-  status(mislukt.length ? 'Niet gelukt: ' + mislukt.join(', ') + '. De rest staat er wel.' : '');
+  status(statusTekst(mislukt));
 }
 
 window.addEventListener('error', e => status('Fout: ' + e.message));
