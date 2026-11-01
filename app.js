@@ -1,0 +1,340 @@
+'use strict';
+/* De Ochtendkrant – webversie. Haalt weer, quote en nieuws op, maakt puzzels en bouwt de krant op (2 A4-pagina's). */
+
+const CONFIG = {
+  LAT: 51.0543, LON: 3.7174, // Gent
+  NIEUWS_FEED: 'https://www.vrt.be/vrtnws/nl.rss.articles.xml',
+  QUOTE_FEED: 'https://www.brainyquote.com/link/quotebr.rss',
+  // Als een feed niet rechtstreeks kan, proberen we deze doorgeefluiken (alleen openbare feeds, geen persoonlijke gegevens)
+  PROXIES: [
+    u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+    u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
+  ],
+  TIMEOUT_MS: 8000,
+  QUOTE_BRON_VERMELDEN: false, // zet op true als BrainyQuote bronvermelding vraagt
+};
+
+const DAGEN = ['maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag', 'zondag'];
+const MAANDEN = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+const WEERCODES = {
+  0: 'Helder', 1: 'Overwegend helder', 2: 'Wisselend bewolkt', 3: 'Bewolkt', 45: 'Mist', 48: 'Rijpmist',
+  51: 'Lichte motregen', 53: 'Motregen', 55: 'Zware motregen', 56: 'Lichte ijzel', 57: 'Ijzel',
+  61: 'Lichte regen', 63: 'Regen', 65: 'Zware regen', 66: 'Lichte ijzel', 67: 'Ijzel',
+  71: 'Lichte sneeuw', 73: 'Sneeuw', 75: 'Zware sneeuw', 77: 'Sneeuwkorrels',
+  80: 'Lichte buien', 81: 'Buien', 82: 'Zware buien', 85: 'Sneeuwbuien', 86: 'Zware sneeuwbuien',
+  95: 'Onweer', 96: 'Onweer met hagel', 99: 'Zwaar onweer met hagel',
+};
+const SPREUKEN = [
+  ['Een goed begin is het halve werk.', 'spreekwoord'], ['Oefening baart kunst.', 'spreekwoord'],
+  ['Wie niet waagt, niet wint.', 'spreekwoord'], ['Na regen komt zonneschijn.', 'spreekwoord'],
+  ['Al doende leert men.', 'spreekwoord'], ['Beter laat dan nooit.', 'spreekwoord'],
+  ['Kleine stappen brengen je ook ver.', 'spreekwoord'], ['Wie begint, is al halverwege.', 'spreekwoord'],
+];
+
+const DEMO = {
+  weer: { tmax: 11, tmin: 5, code: 2, wind: 22,
+    uren: [[6,0],[7,0],[8,5],[9,10],[10,20],[11,30],[11,40],[11,50],[10,60],[10,45],[9,30],[8,15],[7,10],[7,5],[6,0]] },
+  nieuws: [
+    ['Voorbeeldkop van het eerste nieuwsbericht', 'Dit is een voorbeeldtekst. Ze bestaat uit enkele zinnen met de kern van het verhaal. Een derde zin geeft wat achtergrond. Een vierde zin vult dat aan met een reactie.'],
+    ['Voorbeeldkop van het tweede nieuwsbericht', 'Een korte samenvatting in één of twee zinnen.'],
+  ],
+  quotes: [['Voorbeeldquote van de dag.', 'Auteur'], ['Een tweede voorbeeldquote.', 'Auteur']],
+  todos: ['Opdracht indienen', 'Boodschappen doen', 'Training voorbereiden', 'Mail beantwoorden', 'Fiets laten nakijken'],
+  agenda: { 0: ['10:00 Les ontwerp', '19:00 Training'], 2: ['10:00 Les', '16:30 Tandarts'], 4: ['Deadline opdracht', '19:30 Etentje'], 5: ['14:00 Wedstrijd'], 6: ['12:00 Familiebezoek'] },
+};
+
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const $ = id => document.getElementById(id);
+
+/* ---------- netwerk ---------- */
+async function haalOp(url) {
+  const probeer = async u => {
+    const ctl = new AbortController();
+    const t = setTimeout(() => ctl.abort(), CONFIG.TIMEOUT_MS);
+    try {
+      const r = await fetch(u, { signal: ctl.signal });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return await r.text();
+    } finally { clearTimeout(t); }
+  };
+  try { return await probeer(url); } catch (e) { /* rechtstreeks lukt niet: doorgeefluik proberen */ }
+  for (const p of CONFIG.PROXIES) {
+    try { return await probeer(p(url)); } catch (e) { /* volgende */ }
+  }
+  throw new Error('niet bereikbaar: ' + url);
+}
+const parseXml = t => new DOMParser().parseFromString(t, 'text/xml');
+const platteTekst = h => { const d = document.createElement('div'); d.innerHTML = h; return (d.textContent || '').replace(/\s+/g, ' ').trim(); };
+
+/* ---------- weer ---------- */
+async function haalWeer() {
+  const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + CONFIG.LAT + '&longitude=' + CONFIG.LON +
+    '&hourly=temperature_2m,precipitation_probability' +
+    '&daily=temperature_2m_max,temperature_2m_min,weather_code,wind_speed_10m_max&timezone=Europe%2FBrussels&forecast_days=1';
+  const r = await fetch(url);
+  if (!r.ok) throw new Error('weer HTTP ' + r.status);
+  const d = await r.json();
+  const per = {};
+  d.hourly.time.forEach((t, i) => {
+    const u = parseInt(t.slice(11, 13), 10);
+    if (u >= 8 && u <= 22) per[u] = [Math.round(d.hourly.temperature_2m[i]), d.hourly.precipitation_probability[i] || 0];
+  });
+  return {
+    tmax: Math.round(d.daily.temperature_2m_max[0]), tmin: Math.round(d.daily.temperature_2m_min[0]),
+    code: d.daily.weather_code[0], wind: Math.round(d.daily.wind_speed_10m_max[0]),
+    uren: Array.from({ length: 15 }, (_, i) => per[8 + i]),
+  };
+}
+const maxRegen = w => Math.max(...w.uren.map(u => u[1]));
+function weerOmschrijving(w) {
+  let t = (WEERCODES[w.code] || 'Wisselvallig') + '.';
+  if (maxRegen(w) >= 30) t += ' Tot ' + maxRegen(w) + '% kans op regen.';
+  return t + ' Wind tot ' + w.wind + ' km/u.';
+}
+function kledingAdvies(w) {
+  const t = w.tmax;
+  let s = t <= 3 ? 'Winterjas, muts, sjaal en handschoenen.' : t <= 8 ? 'Warme jas en een dikke trui.'
+    : t <= 13 ? 'Trui en jas met voering.' : t <= 18 ? 'Licht jasje of vest.'
+    : t <= 23 ? 'T-shirt, eventueel een vest.' : 'Luchtige zomerkleding en zonnecrème.';
+  if (maxRegen(w) >= 60) s += ' Neem een regenjas of paraplu mee.';
+  else if (maxRegen(w) >= 30) s += ' Regenjas in je tas voor de zekerheid.';
+  if (w.tmin <= 3 && t > 8) s += ' ’s Ochtends is het koud: kleed je in lagen.';
+  return s;
+}
+
+/* ---------- quotes en nieuws ---------- */
+async function haalQuotes() {
+  const xml = parseXml(await haalOp(CONFIG.QUOTE_FEED));
+  const uit = [];
+  xml.querySelectorAll('item').forEach(it => {
+    const tekst = platteTekst(it.querySelector('description')?.textContent || '').replace(/^["“”]+|["“”]+$/g, '').trim();
+    const auteur = platteTekst(it.querySelector('title')?.textContent || '');
+    if (tekst) uit.push([tekst, auteur]);
+  });
+  if (uit.length < 1) throw new Error('geen quotes');
+  return uit;
+}
+const zinnen = t => t.split(/(?<=[.!?])\s+/).map(z => z.trim()).filter(Boolean);
+function inkorten(t, max) {
+  let uit = '';
+  for (const z of zinnen(t)) { if (uit && uit.length + z.length + 1 > max) break; uit = (uit + ' ' + z).trim(); }
+  return uit.length > max ? uit.slice(0, max) : uit;
+}
+async function haalNieuws(n = 2) {
+  const xml = parseXml(await haalOp(CONFIG.NIEUWS_FEED));
+  const uit = [];
+  for (const it of xml.querySelectorAll('item')) {
+    const titel = platteTekst(it.querySelector('title')?.textContent || '');
+    const besch = platteTekst(it.querySelector('description')?.textContent || '');
+    if (titel) uit.push([titel, besch]);
+    if (uit.length === n) break;
+  }
+  if (!uit.length) throw new Error('geen nieuws');
+  return uit;
+}
+
+/* ---------- puzzels ---------- */
+function maakRng(seed) {
+  return function () {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function schud(a, r) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+function kand(g, i) {
+  const r = Math.floor(i / 9), c = i % 9, used = new Set();
+  for (let k = 0; k < 9; k++) { used.add(g[r * 9 + k]); used.add(g[k * 9 + c]); }
+  const br = r - r % 3, bc = c - c % 3;
+  for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) used.add(g[(br + a) * 9 + bc + b]);
+  const uit = []; for (let v = 1; v <= 9; v++) if (!used.has(v)) uit.push(v);
+  return uit;
+}
+function tel(g, limiet) {
+  let beste = null;
+  for (let i = 0; i < 81; i++) if (g[i] === 0) {
+    const k = kand(g, i);
+    if (!k.length) return 0;
+    if (!beste || k.length < beste[1].length) { beste = [i, k]; if (k.length === 1) break; }
+  }
+  if (!beste) return 1;
+  let n = 0;
+  for (const v of beste[1]) { g[beste[0]] = v; n += tel(g, limiet - n); g[beste[0]] = 0; if (n >= limiet) break; }
+  return n;
+}
+function vul(g, r) {
+  for (let i = 0; i < 81; i++) if (g[i] === 0) {
+    for (const v of schud(kand(g, i), r)) { g[i] = v; if (vul(g, r)) return true; g[i] = 0; }
+    return false;
+  }
+  return true;
+}
+function maakSudoku(r, gegeven = 34) {
+  const opl = new Array(81).fill(0); vul(opl, r);
+  const puz = opl.slice(); let aantal = 81;
+  for (const i of schud([...Array(81).keys()], r)) {
+    if (aantal <= gegeven) break;
+    const oud = puz[i]; puz[i] = 0;
+    if (tel(puz.slice(), 2) === 1) aantal--; else puz[i] = oud;
+  }
+  return { puz: puz.join(''), opl: opl.join('') };
+}
+
+const BUREN = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+function tentenOplossingen(n, bomen, rij, kol) {
+  const boomset = new Set(bomen.map(b => b.join(','))), sols = new Set(), tent = [], tentset = new Set();
+  const rc = Array(n).fill(0), cc = Array(n).fill(0);
+  (function rec(i) {
+    if (sols.size >= 2) return;
+    if (i === bomen.length) {
+      if (rc.every((v, x) => v === rij[x]) && cc.every((v, x) => v === kol[x])) sols.add(tent.map(t => t.join(',')).sort().join('|'));
+      return;
+    }
+    const [br, bc] = bomen[i];
+    for (const [dr, dc] of BUREN) {
+      const r = br + dr, c = bc + dc, key = r + ',' + c;
+      if (r < 0 || r >= n || c < 0 || c >= n || boomset.has(key) || tentset.has(key)) continue;
+      if (tent.some(([a, b]) => Math.max(Math.abs(r - a), Math.abs(c - b)) <= 1)) continue;
+      if (rc[r] + 1 > rij[r] || cc[c] + 1 > kol[c]) continue;
+      tent.push([r, c]); tentset.add(key); rc[r]++; cc[c]++;
+      rec(i + 1);
+      tent.pop(); tentset.delete(key); rc[r]--; cc[c]--;
+    }
+  })(0);
+  return sols;
+}
+function maakTenten(r, n = 6, aantal = 7) {
+  for (let poging = 0; poging < 5000; poging++) {
+    const k = poging < 2500 ? aantal : aantal - 1;
+    const cellen = []; for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) cellen.push([a, b]);
+    schud(cellen, r);
+    const tenten = [];
+    for (const [a, b] of cellen) {
+      if (tenten.length === k) break;
+      if (tenten.every(([x, y]) => Math.max(Math.abs(a - x), Math.abs(b - y)) > 1)) tenten.push([a, b]);
+    }
+    if (tenten.length < k) continue;
+    const tentkeys = new Set(tenten.map(t => t.join(','))), bomen = []; let ok = true;
+    for (const [a, b] of tenten) {
+      const opt = BUREN.map(([dr, dc]) => [a + dr, b + dc]).filter(([x, y]) =>
+        x >= 0 && x < n && y >= 0 && y < n && !tentkeys.has(x + ',' + y) && !bomen.some(q => q[0] === x && q[1] === y));
+      if (!opt.length) { ok = false; break; }
+      bomen.push(opt[Math.floor(r() * opt.length)]);
+    }
+    if (!ok) continue;
+    const rij = Array.from({ length: n }, (_, i) => tenten.filter(t => t[0] === i).length);
+    const kol = Array.from({ length: n }, (_, i) => tenten.filter(t => t[1] === i).length);
+    const gesorteerd = bomen.slice().sort((p, q) => p[0] - q[0] || p[1] - q[1]);
+    if (tentenOplossingen(n, gesorteerd, rij, kol).size === 1) return { n, bomen: gesorteerd, rij, kol, tenten };
+  }
+  throw new Error('geen tentenpuzzel gevonden');
+}
+
+/* ---------- HTML-stukken ---------- */
+const BOOM = '<svg viewBox="0 0 10 10" width="60%"><path d="M5 .5L9 6H1zM5 3l4.2 5.5H.8z" fill="#1b1a17"/><rect x="4.3" y="8.5" width="1.4" height="1.5" fill="#1b1a17"/></svg>';
+function sudokuHtml(p) {
+  return '<div class="sudoku">' + [...p].map((ch, i) => {
+    const r = Math.floor(i / 9), k = i % 9;
+    return '<div class="' + ((k === 2 || k === 5 ? 'r' : '') + (r === 2 || r === 5 ? ' b' : '')).trim() + '">' + (ch === '0' ? '' : ch) + '</div>';
+  }).join('') + '</div>';
+}
+function tentenHtml(t) {
+  let h = '<div class="n"></div>' + t.kol.map(x => '<div class="n">' + x + '</div>').join('');
+  for (let r = 0; r < t.n; r++) {
+    h += '<div class="n">' + t.rij[r] + '</div>';
+    for (let c = 0; c < t.n; c++) h += '<div>' + (t.bomen.some(b => b[0] === r && b[1] === c) ? BOOM : '') + '</div>';
+  }
+  return '<div class="tents">' + h + '</div>';
+}
+const tentenOpl = t => Array.from({ length: t.n }, (_, r) => Array.from({ length: t.n }, (_, c) => t.tenten.some(x => x[0] === r && x[1] === c) ? 'A' : '.').join('')).join(' ');
+
+function weerHtml(w) {
+  const kop = '<div class="sec" style="margin-bottom:0"><h2>Weer in Gent</h2></div>';
+  if (!w) return '<div class="wx">' + kop + '<p>Weergegevens zijn nu niet beschikbaar.</p></div>';
+  let uren = '<div class="h lab"><b>Uur</b><span class="t">°C</span><div class="bar2" style="border-bottom-color:transparent"></div><span class="p">Regen</span></div>';
+  w.uren.forEach(([temp, p], i) => {
+    uren += '<div class="h"><b>' + (8 + i) + 'u</b><span class="t">' + temp + '°</span><div class="bar2"><i style="height:' + p + '%"></i></div><span class="p">' + p + '%</span></div>';
+  });
+  return '<div class="wx">' + kop + '<div class="wxtop"><div class="temp">' + w.tmax + '°<span> / ' + w.tmin + '°</span></div><div>' + esc(weerOmschrijving(w)) +
+    '</div><div><span class="tag">Wat trek je aan</span><br>' + esc(kledingAdvies(w)) + '</div></div><div class="hours">' + uren + '</div></div>';
+}
+const quoteHtml = ([t, a]) => '<div class="quote"><q>' + esc(t) + '</q><small>— ' + esc(a) + '</small></div>';
+function nieuwsHtml(items) {
+  if (!items || !items.length) return '';
+  const art = items.map(([titel, besch], i) => {
+    const z = zinnen(inkorten(besch, i === 0 ? 420 : 220));
+    const paras = [z.slice(0, 2).join(' ')];
+    if (i === 0 && z.length > 2) paras.push(z.slice(2).join(' '));
+    return '<div class="art' + (i ? ' small' : '') + '"><span class="tag">VRT NWS</span><h3>' + esc(titel) + '</h3>' + paras.filter(Boolean).map(p => '<p>' + esc(p) + '</p>').join('') + '</div>';
+  }).join('');
+  return '<div class="sec" style="margin:4mm 0 2mm"><h2>Nieuws</h2></div><div class="newsgrid">' + art + '</div>';
+}
+const isoDatum = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+const maandagEerst = d => (d.getDay() + 6) % 7;
+function agendaHtml(start, data) {
+  const eind = new Date(start); eind.setDate(eind.getDate() + 6);
+  while (maandagEerst(eind) !== 6) eind.setDate(eind.getDate() + 1); // altijd tot en met zondag
+  let cellen = '<div></div>'.repeat(maandagEerst(start));
+  for (const d = new Date(start); d <= eind; d.setDate(d.getDate() + 1)) {
+    const lijst = (data[isoDatum(d)] || []).map(a => {
+      const m = a.match(/^(\d{1,2}:\d{2})\s+(.*)$/);
+      return '<div>' + (m ? '<b>' + esc(m[1]) + '</b> ' + esc(m[2]) : esc(a)) + '</div>';
+    }).join('');
+    const nu = d.getTime() === start.getTime();
+    cellen += '<div class="cel' + (nu ? ' nu' : '') + '"><h3>' + DAGEN[maandagEerst(d)] + '</h3><div class="dd">' + d.getDate() + ' ' + MAANDEN[d.getMonth()].slice(0, 3) + '</div>' + lijst + '</div>';
+  }
+  return '<div class="sec agwrap"><h2>Agenda</h2><div class="week">' + cellen + '</div></div>';
+}
+
+/* ---------- krant bouwen ---------- */
+function status(t) { $('status').textContent = t || ''; }
+function schaal() {
+  const f = Math.min(1, (window.innerWidth - 16) / 793.7);
+  document.querySelectorAll('.sheet').forEach(x => { x.style.zoom = f; });
+}
+
+async function bouw() {
+  const demo = new URLSearchParams(location.search).has('demo');
+  const nu = new Date();
+  const start = new Date(nu.getFullYear(), nu.getMonth(), nu.getDate());
+  const rng = maakRng(Math.floor(Date.UTC(start.getFullYear(), start.getMonth(), start.getDate()) / 86400000));
+  const mislukt = [];
+  status('Krant wordt gemaakt…');
+
+  const wacht = (naam, p) => p.catch(() => { mislukt.push(naam); return null; });
+  const [weer, nieuws, quotes] = await Promise.all(demo
+    ? [DEMO.weer, DEMO.nieuws, DEMO.quotes]
+    : [wacht('weer', haalWeer()), wacht('nieuws', haalNieuws()), wacht('quotes', haalQuotes())]);
+
+  const dagnr = Math.floor(start.getTime() / 86400000);
+  const q1 = (quotes && quotes[0]) || SPREUKEN[dagnr % SPREUKEN.length];
+  const q2 = (quotes && quotes[1]) || SPREUKEN[(dagnr + 3) % SPREUKEN.length];
+
+  // Agenda en to-do's komen uit Google (volgende stap); nu alleen in de demo gevuld
+  const agendaData = {};
+  if (demo) Object.entries(DEMO.agenda).forEach(([plus, lijst]) => { const d = new Date(start); d.setDate(d.getDate() + Number(plus)); agendaData[isoDatum(d)] = lijst; });
+  const todos = demo ? DEMO.todos : [];
+
+  const sud = maakSudoku(rng), ten = maakTenten(rng);
+  const datumtekst = DAGEN[maandagEerst(start)] + ' ' + start.getDate() + ' ' + MAANDEN[start.getMonth()] + ' ' + start.getFullYear();
+  const bron = CONFIG.QUOTE_BRON_VERMELDEN ? ' · quotes via BrainyQuote.com' : '';
+
+  $('stage').innerHTML =
+    '<section class="sheet"><header class="mast"><h1>De Ochtendkrant</h1><div class="strip">' + esc(datumtekst) + '</div></header>' +
+    quoteHtml(q1) + weerHtml(weer) + agendaHtml(start, agendaData) + nieuwsHtml(nieuws) + '</section>' +
+    '<section class="sheet"><header class="mast" style="padding-bottom:2mm"><h1 style="font-size:26pt">Puzzels &amp; To-do’s</h1></header>' + quoteHtml(q2) +
+    '<div class="row1"><div class="sec" style="margin-bottom:0"><h2>To-do’s</h2><ul class="todo">' + todos.map(t => '<li>' + esc(t) + '</li>').join('') + '</ul></div>' +
+    '<div><div class="sec" style="margin-bottom:0"><h2>Sudoku</h2></div>' + sudokuHtml(sud.puz) + '</div></div>' +
+    '<div class="row2"><div class="sec" style="margin-bottom:0"><h2>Tenten en bomen</h2></div>' + tentenHtml(ten) + '</div>' +
+    '<div class="sol">' + sud.opl + ' · ' + tentenOpl(ten) + esc(bron) + '</div></section>';
+  schaal();
+  status(mislukt.length ? 'Niet gelukt: ' + mislukt.join(', ') + '. De rest staat er wel.' : '');
+}
+
+window.addEventListener('resize', schaal);
+$('afdrukken').addEventListener('click', () => window.print());
+$('vernieuw').addEventListener('click', bouw);
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+bouw();
