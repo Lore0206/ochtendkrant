@@ -10,8 +10,9 @@ const CONFIG = {
     u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
     u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
   ],
-  TIMEOUT_MS: 8000,
+  TIMEOUT_MS: 6000,
   QUOTE_BRON_VERMELDEN: false, // zet op true als BrainyQuote bronvermelding vraagt
+  GOOGLE_CLIENT_ID: '605238330372-81mk6hhbod8f1gcpinbfm1ibeadncv33.apps.googleusercontent.com',
 };
 
 const DAGEN = ['maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag', 'zondag'];
@@ -71,7 +72,7 @@ async function haalWeer() {
   const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + CONFIG.LAT + '&longitude=' + CONFIG.LON +
     '&hourly=temperature_2m,precipitation_probability' +
     '&daily=temperature_2m_max,temperature_2m_min,weather_code,wind_speed_10m_max&timezone=Europe%2FBrussels&forecast_days=1';
-  const r = await fetch(url);
+  const r = await fetch(url, { signal: AbortSignal.timeout(8000) });
   if (!r.ok) throw new Error('weer HTTP ' + r.status);
   const d = await r.json();
   const per = {};
@@ -114,7 +115,7 @@ async function haalQuotes() {
   if (uit.length < 1) throw new Error('geen quotes');
   return uit;
 }
-const zinnen = t => t.split(/(?<=[.!?])\s+/).map(z => z.trim()).filter(Boolean);
+const zinnen = t => t.replace(/([.!?])\s+/g, '$1\u0001').split('\u0001').map(z => z.trim()).filter(Boolean);
 function inkorten(t, max) {
   let uit = '';
   for (const z of zinnen(t)) { if (uit && uit.length + z.length + 1 > max) break; uit = (uit + ' ' + z).trim(); }
@@ -273,29 +274,144 @@ function nieuwsHtml(items) {
 }
 const isoDatum = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 const maandagEerst = d => (d.getDay() + 6) % 7;
+function agendaEind(start) {
+  const e = new Date(start); e.setDate(e.getDate() + 6);
+  while (maandagEerst(e) !== 6) e.setDate(e.getDate() + 1); // altijd tot en met zondag
+  return e;
+}
 function agendaHtml(start, data) {
-  const eind = new Date(start); eind.setDate(eind.getDate() + 6);
-  while (maandagEerst(eind) !== 6) eind.setDate(eind.getDate() + 1); // altijd tot en met zondag
+  const MAX = 5, eind = agendaEind(start);
   let cellen = '<div></div>'.repeat(maandagEerst(start));
   for (const d = new Date(start); d <= eind; d.setDate(d.getDate() + 1)) {
-    const lijst = (data[isoDatum(d)] || []).map(a => {
+    const items = data[isoDatum(d)] || [];
+    const lijst = items.slice(0, MAX).map(a => {
       const m = a.match(/^(\d{1,2}:\d{2})\s+(.*)$/);
       return '<div>' + (m ? '<b>' + esc(m[1]) + '</b> ' + esc(m[2]) : esc(a)) + '</div>';
-    }).join('');
+    }).join('') + (items.length > MAX ? '<div>+' + (items.length - MAX) + ' meer</div>' : '');
     const nu = d.getTime() === start.getTime();
     cellen += '<div class="cel' + (nu ? ' nu' : '') + '"><h3>' + DAGEN[maandagEerst(d)] + '</h3><div class="dd">' + d.getDate() + ' ' + MAANDEN[d.getMonth()].slice(0, 3) + '</div>' + lijst + '</div>';
   }
   return '<div class="sec agwrap"><h2>Agenda</h2><div class="week">' + cellen + '</div></div>';
 }
+const datumKort = iso => { const [, m, d] = iso.split('-').map(Number); return d + ' ' + MAANDEN[m - 1].slice(0, 3); };
+function todosHtml(todos) {
+  const MAX = 8;
+  const li = todos.slice(0, MAX).map(t => {
+    const o = typeof t === 'string' ? { titel: t } : t;
+    return '<li>' + esc(o.titel) + (o.due ? ' <small>· ' + datumKort(o.due) + '</small>' : '') + '</li>';
+  }).join('') + (todos.length > MAX ? '<li><small>+' + (todos.length - MAX) + ' meer in Google Tasks</small></li>' : '');
+  return '<ul class="todo' + (todos.length > 6 ? ' krap' : '') + '">' + li + '</ul>';
+}
+
+/* ---------- Google: agenda en taken ---------- */
+const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/tasks.readonly';
+async function googleGet(url, token) {
+  const r = await fetch(url, { headers: { Authorization: 'Bearer ' + token }, signal: AbortSignal.timeout(12000) });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error((d.error && d.error.message) || ('HTTP ' + r.status));
+  return d;
+}
+const twee = n => String(n).padStart(2, '0');
+async function haalAgenda(token, start, eind) {
+  const grens = new Date(eind); grens.setDate(grens.getDate() + 1);
+  const kalenders = ((await googleGet('https://www.googleapis.com/calendar/v3/users/me/calendarList?minAccessRole=reader', token)).items || [])
+    .filter(k => k.selected || k.primary);
+  const per = {};
+  const voegToe = (dag, sorteer, tekst) => { (per[dag] = per[dag] || []).push([sorteer, tekst]); };
+  await Promise.all(kalenders.map(async k => {
+    const url = 'https://www.googleapis.com/calendar/v3/calendars/' + encodeURIComponent(k.id) + '/events?singleEvents=true&orderBy=startTime&maxResults=250' +
+      '&timeMin=' + encodeURIComponent(start.toISOString()) + '&timeMax=' + encodeURIComponent(grens.toISOString());
+    ((await googleGet(url, token)).items || []).forEach(ev => {
+      if (ev.status === 'cancelled' || !ev.start) return;
+      const titel = ev.summary || '(zonder titel)';
+      if (ev.start.dateTime) {
+        const b = new Date(ev.start.dateTime), uur = twee(b.getHours()) + ':' + twee(b.getMinutes());
+        voegToe(isoDatum(b), uur.replace(':', ''), uur + ' ' + titel);
+      } else if (ev.start.date) { // hele dag(en): de einddatum is exclusief
+        const b = new Date(ev.start.date + 'T00:00:00');
+        let e = ev.end && ev.end.date ? new Date(ev.end.date + 'T00:00:00') : null;
+        if (!e || e <= b) { e = new Date(b); e.setDate(e.getDate() + 1); }
+        for (const d = new Date(b); d < e; d.setDate(d.getDate() + 1)) if (d >= start && d < grens) voegToe(isoDatum(d), '0000', titel);
+      }
+    });
+  }));
+  const uit = {};
+  Object.keys(per).forEach(dag => {
+    const lijst = per[dag].sort((x, y) => x[0].localeCompare(y[0])).map(x => x[1]);
+    uit[dag] = lijst.filter((t, i) => lijst.indexOf(t) === i); // dubbels weg
+  });
+  return uit;
+}
+async function haalTaken(token) {
+  const lijsten = (await googleGet('https://tasks.googleapis.com/tasks/v1/users/@me/lists?maxResults=20', token)).items || [];
+  const alle = [];
+  await Promise.all(lijsten.map(async l => {
+    const d = await googleGet('https://tasks.googleapis.com/tasks/v1/lists/' + encodeURIComponent(l.id) + '/tasks?showCompleted=false&showHidden=false&maxResults=100', token);
+    (d.items || []).forEach(t => { if (t.title && t.title.trim() && !t.parent) alle.push({ titel: t.title.trim(), due: t.due ? t.due.slice(0, 10) : '' }); });
+  }));
+  return alle.sort((a, b) => (a.due || '9999').localeCompare(b.due || '9999'));
+}
+async function laadGoogle(token, mislukt) {
+  status('Agenda en taken ophalen…');
+  const fouten = [];
+  const [ag, tk] = await Promise.all([
+    haalAgenda(token, STAAT.start, agendaEind(STAAT.start)).catch(e => { fouten.push('agenda (' + e.message + ')'); return null; }),
+    haalTaken(token).catch(e => { fouten.push('taken (' + e.message + ')'); return null; }),
+  ]);
+  if (ag) STAAT.agenda = ag;
+  if (tk) STAAT.todos = tk;
+  teken();
+  const meldingen = [];
+  if (mislukt && mislukt.length) meldingen.push('Niet gelukt: ' + mislukt.join(', ') + '.');
+  if (fouten.length) meldingen.push('Google: ' + fouten.join('; ') + '.');
+  status(meldingen.join(' '));
+}
+let tokenClient = null;
+function initGoogle() {
+  const knop = $('google');
+  if (!CONFIG.GOOGLE_CLIENT_ID) { knop.hidden = true; return; }
+  if (!(window.google && google.accounts && google.accounts.oauth2)) { if (++initGoogle.n < 40) setTimeout(initGoogle, 400); return; }
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: CONFIG.GOOGLE_CLIENT_ID, scope: SCOPES,
+    callback: resp => {
+      if (resp.error) { status('Google: ' + resp.error); return; }
+      STAAT.token = resp.access_token; STAAT.tokenTot = Date.now() + ((resp.expires_in || 3600) - 60) * 1000;
+      knop.textContent = 'Google opnieuw ophalen';
+      laadGoogle(resp.access_token, STAAT.mislukt);
+    },
+    error_callback: e => status('Google: ' + (e.message || e.type)),
+  });
+}
+initGoogle.n = 0;
 
 /* ---------- krant bouwen ---------- */
+const STAAT = { start: null, weer: null, nieuws: null, q1: null, q2: null, sud: null, ten: null, agenda: {}, todos: [], mislukt: [], token: null, tokenTot: 0 };
 function status(t) { $('status').textContent = t || ''; }
 function schaal() {
   const f = Math.min(1, (window.innerWidth - 16) / 793.7);
   document.querySelectorAll('.sheet').forEach(x => { x.style.zoom = f; });
 }
 
+function teken() {
+  const S = STAAT, start = S.start;
+  const datumtekst = DAGEN[maandagEerst(start)] + ' ' + start.getDate() + ' ' + MAANDEN[start.getMonth()] + ' ' + start.getFullYear();
+  const bron = CONFIG.QUOTE_BRON_VERMELDEN ? ' · quotes via BrainyQuote.com' : '';
+  $('stage').innerHTML =
+    '<section class="sheet"><header class="mast"><h1>De Ochtendkrant</h1><div class="strip">' + esc(datumtekst) + '</div></header>' +
+    quoteHtml(S.q1) + weerHtml(S.weer) + agendaHtml(start, S.agenda) + nieuwsHtml(S.nieuws) + '</section>' +
+    '<section class="sheet"><header class="mast" style="padding-bottom:2mm"><h1 style="font-size:26pt">Puzzels &amp; To-do’s</h1></header>' + quoteHtml(S.q2) +
+    '<div class="row1"><div class="sec" style="margin-bottom:0"><h2>To-do’s</h2>' + todosHtml(S.todos) + '</div>' +
+    '<div><div class="sec" style="margin-bottom:0"><h2>Sudoku</h2></div>' + sudokuHtml(S.sud.puz) + '</div></div>' +
+    '<div class="row2"><div class="sec" style="margin-bottom:0"><h2>Tenten en bomen</h2></div>' + tentenHtml(S.ten) + '</div>' +
+    '<div class="sol">' + S.sud.opl + ' · ' + tentenOpl(S.ten) + esc(bron) + '</div></section>';
+  schaal();
+}
+
 async function bouw() {
+  try { await bouwKrant(); } catch (fout) { status('Fout: ' + fout.message); console.error(fout); }
+}
+
+async function bouwKrant() {
   const demo = new URLSearchParams(location.search).has('demo');
   const nu = new Date();
   const start = new Date(nu.getFullYear(), nu.getMonth(), nu.getDate());
@@ -303,38 +419,38 @@ async function bouw() {
   const mislukt = [];
   status('Krant wordt gemaakt…');
 
-  const wacht = (naam, p) => p.catch(() => { mislukt.push(naam); return null; });
+  const limiet = () => new Promise((_, nee) => setTimeout(() => nee(new Error('time-out')), 15000));
+  const wacht = (naam, p) => Promise.race([p, limiet()]).catch(() => { mislukt.push(naam); return null; });
   const [weer, nieuws, quotes] = await Promise.all(demo
     ? [DEMO.weer, DEMO.nieuws, DEMO.quotes]
     : [wacht('weer', haalWeer()), wacht('nieuws', haalNieuws()), wacht('quotes', haalQuotes())]);
 
   const dagnr = Math.floor(start.getTime() / 86400000);
-  const q1 = (quotes && quotes[0]) || SPREUKEN[dagnr % SPREUKEN.length];
-  const q2 = (quotes && quotes[1]) || SPREUKEN[(dagnr + 3) % SPREUKEN.length];
-
-  // Agenda en to-do's komen uit Google (volgende stap); nu alleen in de demo gevuld
-  const agendaData = {};
-  if (demo) Object.entries(DEMO.agenda).forEach(([plus, lijst]) => { const d = new Date(start); d.setDate(d.getDate() + Number(plus)); agendaData[isoDatum(d)] = lijst; });
-  const todos = demo ? DEMO.todos : [];
-
-  const sud = maakSudoku(rng), ten = maakTenten(rng);
-  const datumtekst = DAGEN[maandagEerst(start)] + ' ' + start.getDate() + ' ' + MAANDEN[start.getMonth()] + ' ' + start.getFullYear();
-  const bron = CONFIG.QUOTE_BRON_VERMELDEN ? ' · quotes via BrainyQuote.com' : '';
-
-  $('stage').innerHTML =
-    '<section class="sheet"><header class="mast"><h1>De Ochtendkrant</h1><div class="strip">' + esc(datumtekst) + '</div></header>' +
-    quoteHtml(q1) + weerHtml(weer) + agendaHtml(start, agendaData) + nieuwsHtml(nieuws) + '</section>' +
-    '<section class="sheet"><header class="mast" style="padding-bottom:2mm"><h1 style="font-size:26pt">Puzzels &amp; To-do’s</h1></header>' + quoteHtml(q2) +
-    '<div class="row1"><div class="sec" style="margin-bottom:0"><h2>To-do’s</h2><ul class="todo">' + todos.map(t => '<li>' + esc(t) + '</li>').join('') + '</ul></div>' +
-    '<div><div class="sec" style="margin-bottom:0"><h2>Sudoku</h2></div>' + sudokuHtml(sud.puz) + '</div></div>' +
-    '<div class="row2"><div class="sec" style="margin-bottom:0"><h2>Tenten en bomen</h2></div>' + tentenHtml(ten) + '</div>' +
-    '<div class="sol">' + sud.opl + ' · ' + tentenOpl(ten) + esc(bron) + '</div></section>';
-  schaal();
+  Object.assign(STAAT, {
+    start, weer, nieuws, mislukt,
+    q1: (quotes && quotes[0]) || SPREUKEN[dagnr % SPREUKEN.length],
+    q2: (quotes && quotes[1]) || SPREUKEN[(dagnr + 3) % SPREUKEN.length],
+    sud: maakSudoku(rng), ten: maakTenten(rng),
+  });
+  if (demo) {
+    STAAT.agenda = {};
+    Object.entries(DEMO.agenda).forEach(([plus, lijst]) => { const d = new Date(start); d.setDate(d.getDate() + Number(plus)); STAAT.agenda[isoDatum(d)] = lijst; });
+    STAAT.todos = DEMO.todos;
+  }
+  teken();
+  if (!demo && STAAT.token && Date.now() < STAAT.tokenTot) { await laadGoogle(STAAT.token, mislukt); return; }
   status(mislukt.length ? 'Niet gelukt: ' + mislukt.join(', ') + '. De rest staat er wel.' : '');
 }
 
+window.addEventListener('error', e => status('Fout: ' + e.message));
+window.addEventListener('unhandledrejection', e => status('Fout: ' + (e.reason && e.reason.message)));
 window.addEventListener('resize', schaal);
 $('afdrukken').addEventListener('click', () => window.print());
 $('vernieuw').addEventListener('click', bouw);
+$('google').addEventListener('click', () => {
+  if (tokenClient) tokenClient.requestAccessToken();
+  else status('Google is nog aan het laden. Probeer het over enkele seconden opnieuw.');
+});
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+initGoogle();
 bouw();
