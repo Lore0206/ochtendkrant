@@ -11,7 +11,7 @@ const CONFIG = {
     u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
   ],
   TIMEOUT_MS: 6000,
-  QUOTE_BRON_VERMELDEN: false, // kleine bronvermelding onderaan; zet op false om die weg te laten
+  QUOTE_BRON_VERMELDEN: true, // kleine bronvermelding onderaan; zet op false om die weg te laten
   GOOGLE_CLIENT_ID: '605238330372-81mk6hhbod8f1gcpinbfm1ibeadncv33.apps.googleusercontent.com',
 };
 
@@ -36,9 +36,12 @@ const DEMO = {
   weer: { tmax: 11, tmin: 5, code: 2, wind: 22,
     uren: [[6,0],[7,0],[8,5],[9,10],[10,20],[11,30],[11,40],[11,50],[10,60],[10,45],[9,30],[8,15],[7,10],[7,5],[6,0]] },
   nieuws: [
-    ['Voorbeeldkop van het eerste nieuwsbericht', 'Dit is een voorbeeldtekst. Ze bestaat uit enkele zinnen met de kern van het verhaal. Een derde zin geeft wat achtergrond. Een vierde zin vult dat aan met een reactie.'],
-    ['Voorbeeldkop van het tweede nieuwsbericht', 'Een korte samenvatting in één of twee zinnen.'],
+    ['Voorbeeldkop van het eerste nieuwsbericht', 'Dit is een voorbeeldtekst. Ze bestaat uit enkele zinnen met de kern van het verhaal. Een derde zin geeft wat achtergrond. Een vierde zin vult dat aan met een reactie.', 'Politiek'],
+    ['Voorbeeldkop van het tweede nieuwsbericht', 'Een korte samenvatting in één of twee zinnen, genoeg om de kern van het bericht te begrijpen.'],
+    ['Voorbeeldkop van het derde nieuwsbericht', 'Een korte samenvatting in één of twee zinnen, genoeg om de kern van het bericht te begrijpen.'],
+    ['Voorbeeldkop van het vierde nieuwsbericht', 'Een korte samenvatting in één of twee zinnen, genoeg om de kern van het bericht te begrijpen.'],
   ],
+  feitje: { taal: 'nl', dag: 2, maand: 'november', jaar: 1936, tekst: 'Dit is een voorbeeld van een feitje van de dag, met een korte omschrijving van wat er op deze dag gebeurde.', titel: 'Onderwerp', uitleg: 'Hier staat wat meer uitleg over het onderwerp, zodat je iets nieuws leest. Een tweede zin vult dat aan met nog wat achtergrond en context om rustig door te lezen.' },
   quotes: [['Voorbeeldquote van de dag.', 'Auteur'], ['Een tweede voorbeeldquote.', 'Auteur']],
   todos: ['Opdracht indienen', 'Boodschappen doen', 'Training voorbereiden', 'Mail beantwoorden', 'Fiets laten nakijken'],
   agenda: { 0: ['10:00 Les ontwerp', '19:00 Training'], 2: ['10:00 Les', '16:30 Tandarts'], 4: ['Deadline opdracht', '19:30 Etentje'], 5: ['14:00 Wedstrijd'], 6: ['12:00 Familiebezoek'] },
@@ -87,19 +90,43 @@ async function haalWeer() {
   };
 }
 const maxRegen = w => Math.max(...w.uren.map(u => u[1]));
+function windTekst(kmh) {
+  if (kmh < 6) return 'Windstil';
+  if (kmh < 20) return 'Een zachte wind';
+  if (kmh < 30) return 'Een milde wind';
+  if (kmh < 50) return 'Een stevige wind';
+  if (kmh < 75) return 'Een harde wind';
+  return 'Stormachtig weer';
+}
 function weerOmschrijving(w) {
   let t = (WEERCODES[w.code] || 'Wisselvallig') + '.';
   if (maxRegen(w) >= 30) t += ' Tot ' + maxRegen(w) + '% kans op regen.';
-  return t + ' Wind tot ' + w.wind + ' km/u.';
+  return t + ' ' + windTekst(w.wind) + '.';
 }
+const regenUren = (w, drempel) => w.uren.map((u, i) => [8 + i, u[1]]).filter(x => x[1] >= drempel).map(x => x[0]);
 function kledingAdvies(w) {
-  const t = w.tmax;
-  let s = t <= 3 ? 'Winterjas, muts, sjaal en handschoenen.' : t <= 8 ? 'Warme jas en een dikke trui.'
-    : t <= 13 ? 'Trui en jas met voering.' : t <= 18 ? 'Licht jasje of vest.'
-    : t <= 23 ? 'T-shirt, eventueel een vest.' : 'Luchtige zomerkleding en zonnecrème.';
-  if (maxRegen(w) >= 60) s += ' Neem een regenjas of paraplu mee.';
-  else if (maxRegen(w) >= 30) s += ' Regenjas in je tas voor de zekerheid.';
-  if (w.tmin <= 3 && t > 8) s += ' ’s Ochtends is het koud: kleed je in lagen.';
+  const temps = w.uren.map(u => u[0]), hoog = Math.max(...temps), laag = Math.min(...temps);
+  let gevoel = (hoog + laag) / 2; // gemiddelde van 8u tot 22u
+  if (w.wind >= 50) gevoel -= 4; else if (w.wind >= 30) gevoel -= 2;
+  const banden = [
+    [0, 'Winterjas, muts, sjaal en handschoenen. Warm ondergoed is geen overbodige luxe.'],
+    [4, 'Winterjas, muts, sjaal en handschoenen.'],
+    [8, 'Warme jas, dikke trui en eventueel een sjaal.'],
+    [11, 'Jas met voering en een trui.'],
+    [14, 'Lichte jas en een trui of vest.'],
+    [17, 'Vest of dun jasje over een longsleeve.'],
+    [20, 'T-shirt met een dun vest.'],
+    [24, 'T-shirt en lichte broek; een vest voor ’s avonds.'],
+    [28, 'Luchtige zomerkleding.'],
+  ];
+  const band = banden.find(b => gevoel <= b[0]);
+  let s = band ? band[1] : 'Heel luchtige kleding, zonnecrème en een flesje water.';
+  if (hoog - laag >= 6 && gevoel < 20) s += ' Om 8u is het ' + temps[0] + '° en overdag tot ' + hoog + '°: kleed je in lagen.';
+  const nat = regenUren(w, 50), bui = regenUren(w, 30);
+  if (nat.length) s += ' Regenjas of paraplu mee: regen tussen ' + nat[0] + 'u en ' + (nat[nat.length - 1] + 1) + 'u.';
+  else if (bui.length) s += ' Regenjas in je tas: kans op een bui rond ' + bui[0] + 'u.';
+  if (w.wind >= 40) s += ' Een winddichte jas is aan te raden.';
+  if ([56, 57, 66, 67, 71, 73, 75, 77, 85, 86].includes(w.code)) s += ' Waterdichte schoenen, het kan glad zijn.';
   return s;
 }
 
@@ -118,6 +145,9 @@ async function uitFeedsBestand(sleutel) {
     if (f && Array.isArray(f[sleutel]) && f[sleutel].length) { STAAT.feedDatum = f.datum || ''; return f[sleutel]; }
   } catch (e) { /* bestand ontbreekt: rechtstreeks proberen */ }
   return null;
+}
+async function haalFeitje() {
+  try { const f = await haalFeeds(); return f && f.feitje && f.feitje.tekst ? f.feitje : null; } catch (e) { return null; }
 }
 async function haalQuotes() {
   const bestand = await uitFeedsBestand('quotes');
@@ -138,15 +168,15 @@ function inkorten(t, max) {
   for (const z of zinnen(t)) { if (uit && uit.length + z.length + 1 > max) break; uit = (uit + ' ' + z).trim(); }
   return uit.length > max ? uit.slice(0, max) : uit;
 }
-async function haalNieuws(n = 2) {
+async function haalNieuws(n = 4) {
   const bestand = await uitFeedsBestand('nieuws');
-  if (bestand) return bestand.slice(0, n).map(x => [x.titel, x.samenvatting]);
+  if (bestand) return bestand.slice(0, n).map(x => [x.titel, x.samenvatting || '', x.onderwerp || '']);
   const xml = parseXml(await haalOp(CONFIG.NIEUWS_FEED)); // de VRT-feed is een Atom-feed (entry/summary); RSS (item/description) kan ook
   const uit = [];
   for (const it of xml.querySelectorAll('entry, item')) {
     const titel = platteTekst(it.querySelector('title')?.textContent || '');
     const besch = platteTekst((it.querySelector('summary') || it.querySelector('description'))?.textContent || '');
-    if (titel && besch.length >= 60) uit.push([titel, besch]);
+    if (titel && besch.length >= 60) uit.push([titel, besch, platteTekst(it.querySelector('nstag')?.textContent || '')]);
     if (uit.length === n) break;
   }
   if (!uit.length) throw new Error('geen nieuws');
@@ -283,11 +313,9 @@ function weerHtml(w) {
 const quoteHtml = ([t, a, bron]) => '<div class="quote"><q>' + esc(t) + '</q><small>— ' + esc(a) + (bron && CONFIG.QUOTE_BRON_VERMELDEN ? ' · BrainyQuote.com' : '') + '</small></div>';
 function nieuwsHtml(items) {
   if (!items || !items.length) return '';
-  const art = items.map(([titel, besch], i) => {
-    const z = zinnen(inkorten(besch, i === 0 ? 420 : 220));
-    const paras = [z.slice(0, 2).join(' ')];
-    if (i === 0 && z.length > 2) paras.push(z.slice(2).join(' '));
-    return '<div class="art' + (i ? ' small' : '') + '"><span class="tag">VRT NWS</span><h3>' + esc(titel) + '</h3>' + paras.filter(Boolean).map(p => '<p>' + esc(p) + '</p>').join('') + '</div>';
+  const art = items.map(([titel, besch, onderwerp], i) => {
+    const tekst = inkorten(besch || '', i === 0 ? 300 : 210);
+    return '<div class="art"><span class="tag">' + esc(onderwerp ? onderwerp + ' · VRT NWS' : 'VRT NWS') + '</span><h3>' + esc(titel) + '</h3>' + (tekst ? '<p>' + esc(tekst) + '</p>' : '') + '</div>';
   }).join('');
   return '<div class="sec" style="margin:4mm 0 2mm"><h2>Nieuws</h2></div><div class="newsgrid">' + art + '</div>';
 }
@@ -299,14 +327,14 @@ function agendaEind(start) {
   return e;
 }
 function agendaHtml(start, data) {
-  const MAX = 5, eind = agendaEind(start);
+  const eind = agendaEind(start);
   let cellen = '<div></div>'.repeat(maandagEerst(start));
   for (const d = new Date(start); d <= eind; d.setDate(d.getDate() + 1)) {
     const items = data[isoDatum(d)] || [];
-    const lijst = items.slice(0, MAX).map(a => {
+    const lijst = items.map(a => {
       const m = a.match(/^(\d{1,2}:\d{2})\s+(.*)$/);
       return '<div>' + (m ? '<b>' + esc(m[1]) + '</b> ' + esc(m[2]) : esc(a)) + '</div>';
-    }).join('') + (items.length > MAX ? '<div>+' + (items.length - MAX) + ' meer</div>' : '');
+    }).join('');
     const nu = d.getTime() === start.getTime();
     cellen += '<div class="cel' + (nu ? ' nu' : '') + '"><h3>' + DAGEN[maandagEerst(d)] + '</h3><div class="dd">' + d.getDate() + ' ' + MAANDEN[d.getMonth()].slice(0, 3) + '</div>' + lijst + '</div>';
   }
@@ -314,12 +342,18 @@ function agendaHtml(start, data) {
 }
 const datumKort = iso => { const [, m, d] = iso.split('-').map(Number); return d + ' ' + MAANDEN[m - 1].slice(0, 3); };
 function todosHtml(todos) {
-  const MAX = 8;
-  const li = todos.slice(0, MAX).map(t => {
+  const li = todos.map(t => {
     const o = typeof t === 'string' ? { titel: t } : t;
     return '<li>' + esc(o.titel) + (o.due ? ' <small>· ' + datumKort(o.due) + '</small>' : '') + '</li>';
-  }).join('') + (todos.length > MAX ? '<li><small>+' + (todos.length - MAX) + ' meer in Google Tasks</small></li>' : '');
-  return '<ul class="todo' + (todos.length > 6 ? ' krap' : '') + '">' + li + '</ul>';
+  }).join('');
+  const n = todos.length, kol = n <= 10 ? '' : n <= 20 ? ' kol2' : ' kol3'; // vanaf 11 taken meerdere kolommen
+  return '<ul class="todo' + (n > 6 ? ' krap' : '') + kol + '">' + li + '</ul>';
+}
+function feitjeHtml(f) {
+  if (!f) return '';
+  const kop = (f.taal === 'nl' ? 'Op ' : '') + f.dag + ' ' + f.maand + ' ' + f.jaar;
+  return '<div class="sec" style="margin-bottom:0"><h2>Feitje van de dag</h2></div><div class="feit"><p class="feit-kop">' + esc(kop) + '</p><p>' + esc(f.tekst) + '</p>' +
+    (f.uitleg ? '<p><b>' + esc(f.titel) + '.</b> ' + esc(f.uitleg) + '</p>' : '') + '<p class="feit-bron">Bron: Wikipedia</p></div>';
 }
 
 /* ---------- Google: agenda en taken ---------- */
@@ -377,6 +411,7 @@ function oudMelding() {
 }
 function statusTekst(mislukt) {
   const m = [];
+  if (!STAAT.past) m.push('Let op: niet alles past op de pagina.');
   if (mislukt && mislukt.length) m.push('Niet gelukt: ' + mislukt.join(', ') + '.');
   if (oudMelding()) m.push(oudMelding());
   return m.join(' ');
@@ -414,7 +449,7 @@ function initGoogle() {
 initGoogle.n = 0;
 
 /* ---------- krant bouwen ---------- */
-const STAAT = { start: null, weer: null, nieuws: null, q1: null, q2: null, sud: null, ten: null, agenda: {}, todos: [], mislukt: [], token: null, tokenTot: 0, feedDatum: '' };
+const STAAT = { start: null, weer: null, nieuws: null, q1: null, q2: null, sud: null, ten: null, agenda: {}, todos: [], mislukt: [], token: null, tokenTot: 0, feedDatum: '', feitje: null, past: true };
 function status(t) { $('status').textContent = t || ''; }
 function schaal() {
   const f = Math.min(1, (window.innerWidth - 16) / 793.7);
@@ -430,9 +465,26 @@ function teken() {
     '<section class="sheet"><header class="mast" style="padding-bottom:2mm"><h1 style="font-size:26pt">Puzzels &amp; To-do’s</h1></header>' + quoteHtml(S.q2) +
     '<div class="row1"><div class="sec" style="margin-bottom:0"><h2>To-do’s</h2>' + todosHtml(S.todos) + '</div>' +
     '<div><div class="sec" style="margin-bottom:0"><h2>Sudoku</h2></div>' + sudokuHtml(S.sud.puz) + '</div></div>' +
-    '<div class="row2"><div class="sec" style="margin-bottom:0"><h2>Tenten en bomen</h2></div>' + tentenHtml(S.ten) + '</div>' +
+    (S.feitje
+      ? '<div class="row2 duo"><div><div class="sec" style="margin-bottom:0"><h2>Tenten en bomen</h2></div>' + tentenHtml(S.ten) + '</div><div>' + feitjeHtml(S.feitje) + '</div></div>'
+      : '<div class="row2"><div class="sec" style="margin-bottom:0"><h2>Tenten en bomen</h2></div>' + tentenHtml(S.ten) + '</div>') +
     '<div class="sol">' + S.sud.opl + ' · ' + tentenOpl(S.ten) + '</div></section>';
+  document.querySelectorAll('.sheet').forEach(x => { x.style.zoom = 1; });
+  S.past = pasAan();
   schaal();
+}
+// Past alles niet op een pagina? Dan maken we agenda, nieuws, to-do's en feitje stapsgewijs iets kleiner.
+function pasAan() {
+  let past = true;
+  document.querySelectorAll('.sheet').forEach(sh => {
+    for (const k of ['', 'k1', 'k2', 'k3']) {
+      sh.classList.remove('k1', 'k2', 'k3');
+      if (k) sh.classList.add(k);
+      if (sh.scrollHeight <= sh.clientHeight + 1) return;
+    }
+    past = false;
+  });
+  return past;
 }
 
 async function bouw() {
@@ -450,13 +502,13 @@ async function bouwKrant() {
 
   const limiet = () => new Promise((_, nee) => setTimeout(() => nee(new Error('time-out')), 15000));
   const wacht = (naam, p) => Promise.race([p, limiet()]).catch(() => { mislukt.push(naam); return null; });
-  const [weer, nieuws, quotes] = await Promise.all(demo
-    ? [DEMO.weer, DEMO.nieuws, DEMO.quotes]
-    : [wacht('weer', haalWeer()), wacht('nieuws', haalNieuws()), wacht('quotes', haalQuotes())]);
+  const [weer, nieuws, quotes, feitje] = await Promise.all(demo
+    ? [DEMO.weer, DEMO.nieuws, DEMO.quotes, DEMO.feitje]
+    : [wacht('weer', haalWeer()), wacht('nieuws', haalNieuws()), wacht('quotes', haalQuotes()), haalFeitje()]);
 
   const dagnr = Math.floor(start.getTime() / 86400000);
   Object.assign(STAAT, {
-    start, weer, nieuws, mislukt,
+    start, weer, nieuws, mislukt, feitje,
     q1: (quotes && quotes[0] && [...quotes[0], true]) || SPREUKEN[dagnr % SPREUKEN.length],
     q2: (quotes && quotes[1] && [...quotes[1], true]) || SPREUKEN[(dagnr + 3) % SPREUKEN.length],
     sud: maakSudoku(rng), ten: maakTenten(rng),
