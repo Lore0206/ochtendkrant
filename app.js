@@ -11,7 +11,7 @@ const CONFIG = {
     u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
   ],
   TIMEOUT_MS: 6000,
-  QUOTE_BRON_VERMELDEN: true, // kleine bronvermelding onderaan; zet op false om die weg te laten
+  QUOTE_BRON_VERMELDEN: false, // kleine bronvermelding onderaan; zet op false om die weg te laten
   GOOGLE_CLIENT_ID: '605238330372-81mk6hhbod8f1gcpinbfm1ibeadncv33.apps.googleusercontent.com',
 };
 
