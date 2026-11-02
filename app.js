@@ -11,7 +11,7 @@ const CONFIG = {
     u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
   ],
   TIMEOUT_MS: 6000,
-  QUOTE_BRON_VERMELDEN: false, // kleine bronvermelding onderaan; zet op false om die weg te laten
+  QUOTE_BRON_VERMELDEN: true, // kleine bronvermelding onderaan; zet op false om die weg te laten
   GOOGLE_CLIENT_ID: '605238330372-81mk6hhbod8f1gcpinbfm1ibeadncv33.apps.googleusercontent.com',
 };
 
@@ -183,123 +183,7 @@ async function haalNieuws(n = 4) {
   return uit;
 }
 
-/* ---------- puzzels ---------- */
-function maakRng(seed) {
-  return function () {
-    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
-    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
-    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  };
-}
-function schud(a, r) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-
-function kand(g, i) {
-  const r = Math.floor(i / 9), c = i % 9, used = new Set();
-  for (let k = 0; k < 9; k++) { used.add(g[r * 9 + k]); used.add(g[k * 9 + c]); }
-  const br = r - r % 3, bc = c - c % 3;
-  for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) used.add(g[(br + a) * 9 + bc + b]);
-  const uit = []; for (let v = 1; v <= 9; v++) if (!used.has(v)) uit.push(v);
-  return uit;
-}
-function tel(g, limiet) {
-  let beste = null;
-  for (let i = 0; i < 81; i++) if (g[i] === 0) {
-    const k = kand(g, i);
-    if (!k.length) return 0;
-    if (!beste || k.length < beste[1].length) { beste = [i, k]; if (k.length === 1) break; }
-  }
-  if (!beste) return 1;
-  let n = 0;
-  for (const v of beste[1]) { g[beste[0]] = v; n += tel(g, limiet - n); g[beste[0]] = 0; if (n >= limiet) break; }
-  return n;
-}
-function vul(g, r) {
-  for (let i = 0; i < 81; i++) if (g[i] === 0) {
-    for (const v of schud(kand(g, i), r)) { g[i] = v; if (vul(g, r)) return true; g[i] = 0; }
-    return false;
-  }
-  return true;
-}
-function maakSudoku(r, gegeven = 34) {
-  const opl = new Array(81).fill(0); vul(opl, r);
-  const puz = opl.slice(); let aantal = 81;
-  for (const i of schud([...Array(81).keys()], r)) {
-    if (aantal <= gegeven) break;
-    const oud = puz[i]; puz[i] = 0;
-    if (tel(puz.slice(), 2) === 1) aantal--; else puz[i] = oud;
-  }
-  return { puz: puz.join(''), opl: opl.join('') };
-}
-
-const BUREN = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-function tentenOplossingen(n, bomen, rij, kol) {
-  const boomset = new Set(bomen.map(b => b.join(','))), sols = new Set(), tent = [], tentset = new Set();
-  const rc = Array(n).fill(0), cc = Array(n).fill(0);
-  (function rec(i) {
-    if (sols.size >= 2) return;
-    if (i === bomen.length) {
-      if (rc.every((v, x) => v === rij[x]) && cc.every((v, x) => v === kol[x])) sols.add(tent.map(t => t.join(',')).sort().join('|'));
-      return;
-    }
-    const [br, bc] = bomen[i];
-    for (const [dr, dc] of BUREN) {
-      const r = br + dr, c = bc + dc, key = r + ',' + c;
-      if (r < 0 || r >= n || c < 0 || c >= n || boomset.has(key) || tentset.has(key)) continue;
-      if (tent.some(([a, b]) => Math.max(Math.abs(r - a), Math.abs(c - b)) <= 1)) continue;
-      if (rc[r] + 1 > rij[r] || cc[c] + 1 > kol[c]) continue;
-      tent.push([r, c]); tentset.add(key); rc[r]++; cc[c]++;
-      rec(i + 1);
-      tent.pop(); tentset.delete(key); rc[r]--; cc[c]--;
-    }
-  })(0);
-  return sols;
-}
-function maakTenten(r, n = 6, aantal = 7) {
-  for (let poging = 0; poging < 5000; poging++) {
-    const k = poging < 2500 ? aantal : aantal - 1;
-    const cellen = []; for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) cellen.push([a, b]);
-    schud(cellen, r);
-    const tenten = [];
-    for (const [a, b] of cellen) {
-      if (tenten.length === k) break;
-      if (tenten.every(([x, y]) => Math.max(Math.abs(a - x), Math.abs(b - y)) > 1)) tenten.push([a, b]);
-    }
-    if (tenten.length < k) continue;
-    const tentkeys = new Set(tenten.map(t => t.join(','))), bomen = []; let ok = true;
-    for (const [a, b] of tenten) {
-      const opt = BUREN.map(([dr, dc]) => [a + dr, b + dc]).filter(([x, y]) =>
-        x >= 0 && x < n && y >= 0 && y < n && !tentkeys.has(x + ',' + y) && !bomen.some(q => q[0] === x && q[1] === y));
-      if (!opt.length) { ok = false; break; }
-      bomen.push(opt[Math.floor(r() * opt.length)]);
-    }
-    if (!ok) continue;
-    const rij = Array.from({ length: n }, (_, i) => tenten.filter(t => t[0] === i).length);
-    const kol = Array.from({ length: n }, (_, i) => tenten.filter(t => t[1] === i).length);
-    const gesorteerd = bomen.slice().sort((p, q) => p[0] - q[0] || p[1] - q[1]);
-    if (tentenOplossingen(n, gesorteerd, rij, kol).size === 1) return { n, bomen: gesorteerd, rij, kol, tenten };
-  }
-  throw new Error('geen tentenpuzzel gevonden');
-}
-
 /* ---------- HTML-stukken ---------- */
-const BOOM = '<svg viewBox="0 0 10 10" width="60%"><path d="M5 .5L9 6H1zM5 3l4.2 5.5H.8z" fill="#1b1a17"/><rect x="4.3" y="8.5" width="1.4" height="1.5" fill="#1b1a17"/></svg>';
-function sudokuHtml(p) {
-  return '<div class="sudoku">' + [...p].map((ch, i) => {
-    const r = Math.floor(i / 9), k = i % 9;
-    return '<div class="' + ((k === 2 || k === 5 ? 'r' : '') + (r === 2 || r === 5 ? ' b' : '')).trim() + '">' + (ch === '0' ? '' : ch) + '</div>';
-  }).join('') + '</div>';
-}
-function tentenHtml(t) {
-  let h = '<div class="n"></div>' + t.kol.map(x => '<div class="n">' + x + '</div>').join('');
-  for (let r = 0; r < t.n; r++) {
-    h += '<div class="n">' + t.rij[r] + '</div>';
-    for (let c = 0; c < t.n; c++) h += '<div>' + (t.bomen.some(b => b[0] === r && b[1] === c) ? BOOM : '') + '</div>';
-  }
-  return '<div class="tents">' + h + '</div>';
-}
-const tentenOpl = t => Array.from({ length: t.n }, (_, r) => Array.from({ length: t.n }, (_, c) => t.tenten.some(x => x[0] === r && x[1] === c) ? 'A' : '.').join('')).join(' ');
-
 function weerHtml(w) {
   const kop = '<div class="sec" style="margin-bottom:0"><h2>Weer in Gent</h2></div>';
   if (!w) return '<div class="wx">' + kop + '<p>Weergegevens zijn nu niet beschikbaar.</p></div>';
@@ -348,6 +232,9 @@ function todosHtml(todos) {
   }).join('');
   const n = todos.length, kol = n <= 10 ? '' : n <= 20 ? ' kol2' : ' kol3'; // vanaf 11 taken meerdere kolommen
   return '<ul class="todo' + (n > 6 ? ' krap' : '') + kol + '">' + li + '</ul>';
+}
+function puzzelHtml(p) {
+  return '<div class="sec" style="margin-bottom:0"><h2>' + esc(p.naam) + '</h2></div>' + p.html;
 }
 function feitjeHtml(f) {
   if (!f) return '';
@@ -449,7 +336,7 @@ function initGoogle() {
 initGoogle.n = 0;
 
 /* ---------- krant bouwen ---------- */
-const STAAT = { start: null, weer: null, nieuws: null, q1: null, q2: null, sud: null, ten: null, agenda: {}, todos: [], mislukt: [], token: null, tokenTot: 0, feedDatum: '', feitje: null, past: true };
+const STAAT = { start: null, weer: null, nieuws: null, q1: null, q2: null, puzzels: [], agenda: {}, todos: [], mislukt: [], token: null, tokenTot: 0, feedDatum: '', feitje: null, past: true };
 function status(t) { $('status').textContent = t || ''; }
 function schaal() {
   const f = Math.min(1, (window.innerWidth - 16) / 793.7);
@@ -464,11 +351,11 @@ function teken() {
     quoteHtml(S.q1) + weerHtml(S.weer) + agendaHtml(start, S.agenda) + nieuwsHtml(S.nieuws) + '</section>' +
     '<section class="sheet"><header class="mast" style="padding-bottom:2mm"><h1 style="font-size:26pt">Puzzels &amp; To-do’s</h1></header>' + quoteHtml(S.q2) +
     '<div class="row1"><div class="sec" style="margin-bottom:0"><h2>To-do’s</h2>' + todosHtml(S.todos) + '</div>' +
-    '<div><div class="sec" style="margin-bottom:0"><h2>Sudoku</h2></div>' + sudokuHtml(S.sud.puz) + '</div></div>' +
+    '<div>' + puzzelHtml(S.puzzels[0]) + '</div></div>' +
     (S.feitje
-      ? '<div class="row2 duo"><div><div class="sec" style="margin-bottom:0"><h2>Tenten en bomen</h2></div>' + tentenHtml(S.ten) + '</div><div>' + feitjeHtml(S.feitje) + '</div></div>'
-      : '<div class="row2"><div class="sec" style="margin-bottom:0"><h2>Tenten en bomen</h2></div>' + tentenHtml(S.ten) + '</div>') +
-    '<div class="sol">' + S.sud.opl + ' · ' + tentenOpl(S.ten) + '</div></section>';
+      ? '<div class="row2 duo"><div>' + puzzelHtml(S.puzzels[1]) + '</div><div>' + feitjeHtml(S.feitje) + '</div></div>'
+      : '<div class="row2"><div>' + puzzelHtml(S.puzzels[1]) + '</div></div>') +
+    '<div class="sol">' + S.puzzels.map(p => esc(p.naam.toLowerCase() + ': ' + p.oplossing)).join('<br>') + '</div></section>';
   document.querySelectorAll('.sheet').forEach(x => { x.style.zoom = 1; });
   S.past = pasAan();
   schaal();
@@ -511,7 +398,7 @@ async function bouwKrant() {
     start, weer, nieuws, mislukt, feitje,
     q1: (quotes && quotes[0] && [...quotes[0], true]) || SPREUKEN[dagnr % SPREUKEN.length],
     q2: (quotes && quotes[1] && [...quotes[1], true]) || SPREUKEN[(dagnr + 3) % SPREUKEN.length],
-    sud: maakSudoku(rng), ten: maakTenten(rng),
+    puzzels: kiesPuzzels(dagnr).map((type, i) => maakPuzzel(type, maakRng(dagnr * 131 + i * 17 + 5))),
   });
   if (demo) {
     STAAT.agenda = {};
