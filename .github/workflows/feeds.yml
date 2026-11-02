@@ -1,6 +1,6 @@
 name: Feeds ophalen
 
-# Haalt het VRT-nieuws en de BrainyQuote-quotes op en bewaart ze in data/feeds.json.
+# Haalt het VRT-nieuws, de BrainyQuote-quotes en het feitje van de dag op en bewaart ze in data/feeds.json.
 # De krant leest dat bestand, zodat de browser de feeds niet zelf hoeft op te halen.
 
 on:
@@ -30,21 +30,46 @@ jobs:
 
           NIEUWS = os.environ.get("NIEUWS_URL", "https://www.vrt.be/vrtnws/nl.rss.articles.xml")
           QUOTES = os.environ.get("QUOTE_URL", "https://www.brainyquote.com/link/quotebr.rss")
-          UIT = "data/feeds.json"
+          FEITJE = os.environ.get("FEITJE_URL", "")
+          UIT = os.environ.get("UIT", "data/feeds.json")
           UA = {"User-Agent": "Mozilla/5.0 (compatible; Ochtendkrant/1.0)"}
+          NU = datetime.datetime.now(ZoneInfo("Europe/Brussels"))
+          MAANDEN = ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus",
+                     "september", "oktober", "november", "december"]
+
+          # ---- Hoe belangrijk is een nieuwsbericht? Pas deze lijsten gerust aan. ----
+          ONDERWERPEN = {  # label van VRT NWS -> gewicht
+              "Politiek": 5, "Economie": 4, "Europese Unie": 4, "Europa": 3, "Buitenland": 3, "Amerika kiest": 3,
+              "Rusland": 3, "Midden-Oosten": 3, "Oekraïne": 3, "Milieu & Klimaat": 3, "Gezondheid": 3, "Onderwijs": 3,
+              "Energie": 3, "Technologie & Wetenschap": 2, "Binnenland": 2, "Justitie": 2, "Azië": 2, "Afrika": 2,
+              "Latijns-Amerika": 1, "Nederland": 1, "Mobiliteit": 0, "Samenleving": 0,
+              "Sport": -6, "Cultuur & Media": -5, "Boeken": -5, "Festivals": -5, "Seksualiteit & Relaties": -4,
+              "Lifestyle": -4, "Reizen": -4, "Muziek": -5, "Film": -5, "Televisie": -5, "Showbizz": -6,
+          }
+          BELANGRIJK = ["regering", "premier", "minister", "parlement", "verkiezing", "akkoord", "begroting", "belasting",
+                        "pensioen", "staking", "inflatie", "oorlog", "aanslag", "dreiging", "noodtoestand", "code rood",
+                        "code oranje", "storm", "griep", "vaccin", "decreet", "wet ", "hof ", "cyberaanval", "crisis", "navo",
+                        "oekraïne", "gaza", "israël", "iran", "klimaat", "sancties", "nmbs", "energie", "rente", "werkloos"]
+          ONBELANGRIJK = ["halloween", "grap", "festival", "puppy", "trick", "pompoen", "muurschildering", "gedichten", "beklad"]
+          LOKAAL = ["gent", "oost-vlaanderen"]
+          STOP = set("voor naar over onder tegen tussen bijna andere werden worden waren wordt heeft hebben haar zijn".split())
+
 
           def haal(url):
               with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=30) as r:
                   return r.read()
 
+
           def naam(el):
               return el.tag.split("}")[-1]
+
 
           def tekst(el, n):
               for c in el:
                   if naam(c) == n:
                       return (c.text or "").strip()
               return ""
+
 
           def link(el):
               for c in el:
@@ -55,21 +80,64 @@ jobs:
                           return c.text.strip()
               return ""
 
+
           def plat(h):
               return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html.unescape(h))).strip()
 
+
+          def woorden(t):
+              return {w for w in re.findall(r"[a-zà-ÿ]{6,}", t.lower()) if w not in STOP}
+
+
+          def score(titel, sam, tag, label):
+              s = ONDERWERPEN.get(tag, -1 if not tag else 0)
+              if "radio-2" in label:
+                  s -= 2  # lichte regionale berichtjes
+              t = (titel + " " + sam + " ").lower()
+              s += min(4, 2 * sum(1 for k in BELANGRIJK if k in t))
+              s -= 3 * sum(1 for k in ONBELANGRIJK if k in t)
+              s += 2 * any(k in t for k in LOKAAL)
+              return s + (1 if sam else 0)
+
+
           def nieuws(url):
-              uit = []
-              for e in ET.fromstring(haal(url)).iter():
+              kandidaten = []
+              for i, e in enumerate(ET.fromstring(haal(url)).iter()):
                   if naam(e) not in ("entry", "item"):
                       continue
                   titel = plat(tekst(e, "title"))
                   sam = plat(tekst(e, "summary") or tekst(e, "description"))
-                  if titel and len(sam) >= 60:  # liveblogs zonder samenvatting slaan we over
-                      uit.append({"titel": titel, "samenvatting": sam, "link": link(e)})
-                  if len(uit) >= 8:
+                  tag, label = plat(tekst(e, "nstag")), tekst(e, "nslabeltag")
+                  bijgewerkt = tekst(e, "updated")
+                  if bijgewerkt:  # niets ouder dan anderhalve dag
+                      try:
+                          d = datetime.datetime.fromisoformat(bijgewerkt.replace("Z", "+00:00"))
+                          if (datetime.datetime.now(datetime.timezone.utc) - d).total_seconds() > 36 * 3600:
+                              continue
+                      except ValueError:
+                          pass
+                  if not titel:
+                      continue
+                  sc = score(titel, sam, tag, label)
+                  if not sam and sc < 6:  # alleen kopjes (liveblogs) als ze echt belangrijk zijn
+                      continue
+                  kandidaten.append((sc, i, {"titel": titel, "samenvatting": sam, "onderwerp": tag, "link": link(e), "score": sc}))
+              kandidaten.sort(key=lambda x: (-x[0], x[1]))
+              gekozen, per_tag = [], {}
+              for sc, _, item in kandidaten:
+                  if sc < 2:
                       break
-              return uit
+                  if per_tag.get(item["onderwerp"], 0) >= 2:
+                      continue
+                  w = woorden(item["titel"])
+                  if any(len(w & woorden(g["titel"])) >= 2 for g in gekozen):  # hetzelfde verhaal
+                      continue
+                  gekozen.append(item)
+                  per_tag[item["onderwerp"]] = per_tag.get(item["onderwerp"], 0) + 1
+                  if len(gekozen) == 8:
+                      break
+              return gekozen
+
 
           def quotes(url):
               uit = []
@@ -88,6 +156,36 @@ jobs:
                       uit.append({"tekst": q, "auteur": a})
               return uit
 
+
+          def inkorten(t, maximum):
+              zinnen = re.split(r"(?<=[.!?])\s+", t)
+              uit = ""
+              for z in zinnen:
+                  if uit and len(uit) + len(z) + 1 > maximum:
+                      break
+                  uit = (uit + " " + z).strip()
+              return uit[:maximum]
+
+
+          def feitje(_url):
+              """'Op deze dag' van Wikipedia: eerst Nederlands, anders Engels."""
+              for taal in ("nl", "en"):
+                  url = FEITJE or "https://%s.wikipedia.org/api/rest_v1/feed/onthisday/selected/%02d/%02d" % (taal, NU.month, NU.day)
+                  try:
+                      items = json.loads(haal(url)).get("selected") or []
+                      items = [x for x in items if x.get("text") and x.get("year")]
+                      if not items:
+                          continue
+                      x = items[NU.toordinal() % len(items)]
+                      pag = (x.get("pages") or [{}])[0]
+                      return {"taal": taal, "dag": NU.day, "maand": MAANDEN[NU.month - 1], "jaar": x["year"], "tekst": plat(x["text"]),
+                              "titel": plat(pag.get("titles", {}).get("normalized") or pag.get("title", "")),
+                              "uitleg": inkorten(plat(pag.get("extract", "")), 650)}
+                  except Exception as fout:
+                      print("Feitje mislukt (%s): %s" % (taal, fout), file=sys.stderr)
+              return None
+
+
           oud = {}
           if os.path.exists(UIT):
               try:
@@ -95,25 +193,26 @@ jobs:
               except Exception:
                   oud = {}
 
-          nieuw = {"nieuws": oud.get("nieuws", []), "quotes": oud.get("quotes", [])}
+          nieuw = {k: oud.get(k) for k in ("nieuws", "quotes", "feitje") if oud.get(k)}
           fouten = []
-          for sleutel, functie, url in (("nieuws", nieuws, NIEUWS), ("quotes", quotes, QUOTES)):
+          for sleutel, functie, url in (("nieuws", nieuws, NIEUWS), ("quotes", quotes, QUOTES), ("feitje", feitje, "")):
               try:
                   gevonden = functie(url)
                   if not gevonden:
-                      raise ValueError("lege feed")
+                      raise ValueError("leeg resultaat")
                   nieuw[sleutel] = gevonden
               except Exception as fout:
-                  fouten.append("%s: %s" % (sleutel, fout))
+                  fouten.append(sleutel)
                   print("Mislukt:", sleutel, fout, file=sys.stderr)
 
-          if len(fouten) == 2 and not oud:
-              sys.exit("Beide feeds mislukt en er is nog geen oud bestand")
+          if len(fouten) == 3 and not oud:
+              sys.exit("Alles mislukt en er is nog geen oud bestand")
 
-          nieuw["datum"] = datetime.datetime.now(ZoneInfo("Europe/Brussels")).strftime("%Y-%m-%d")
+          nieuw["datum"] = NU.strftime("%Y-%m-%d")
+          os.makedirs(os.path.dirname(UIT) or ".", exist_ok=True)
           with open(UIT, "w", encoding="utf-8") as f:
               json.dump(nieuw, f, ensure_ascii=False, indent=1)
-          print("Klaar:", len(nieuw["nieuws"]), "nieuwsberichten,", len(nieuw["quotes"]), "quotes")
+          print("Klaar: %d nieuwsberichten, %d quotes, feitje: %s" % (len(nieuw.get("nieuws", [])), len(nieuw.get("quotes", [])), "ja" if nieuw.get("feitje") else "nee"))
           PY
 
       - name: Opslaan
