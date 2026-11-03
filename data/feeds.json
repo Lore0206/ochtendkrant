@@ -1,20 +1,6 @@
 {
  "nieuws": [
   {
-   "titel": "Koning houdt ontslag premier in beraad: \"Onderdeel van ritueel om druk op partijen op te drijven\"",
-   "samenvatting": "Ons land zit in een politieke crisis: premier Bart De Wever (N-VA) heeft zijn ontslag ingediend en de koning houdt dat in beraad tot vrijdag. Is er nu definitief een wig gedreven in de Arizona-regering? Of is het een manier om de druk op de coalitiepartners op te voeren en hen tot iets meer inschikkelijkheid te bewegen? Of moet dit alles verhullen dat er volgend jaar sowieso met voorlopige twaalfden zal worden gewerkt, iets wat De Wever zelf had uitgesloten?",
-   "onderwerp": "Politiek",
-   "link": "https://vrtnws.be/p.3Bwmp8DRP",
-   "score": 10
-  },
-  {
-   "titel": "Minister Vandenbroucke (Vooruit): \"We zijn niet uit op verkiezingen, we willen rechtvaardige oplossing\"",
-   "samenvatting": "",
-   "onderwerp": "Politiek",
-   "link": "https://vrtnws.be/p.nwvwmBOBR",
-   "score": 9
-  },
-  {
    "titel": "Hoe 'midterms' niet alleen Trumps meerderheid in Washington, maar ook zijn greep op Republikeinen bedreigen",
    "samenvatting": "Het Amerikaanse ministerie van Justitie heeft zich op korte tijd gemengd in de verkiezingen in Alaska, ambtenaren in Californië en Washington geïntimideerd en onderzoeken opgestart naar prominente Democraten. Dat juridisch offensief is geen toeval: Donald Trump vreest dat de midterms niet alleen zijn meerderheid in het Congres, maar ook zijn greep op de Republikeinse partij in gevaar brengen. Republikeinse kandidaten nemen nu al afstand van de president. En een Democratisch Congres biedt ook zijn ministers de vrijheid om meer tegen hem in te gaan, met de blik op 2028.",
    "onderwerp": "Amerika kiest",
@@ -29,18 +15,25 @@
    "score": 8
   },
   {
-   "titel": "Militaire actie in Hebron \"beëindigd\", opnieuw doden bij Israëlische bombardementen in Gaza",
-   "samenvatting": "",
-   "onderwerp": "Midden-Oosten",
-   "link": "https://vrtnws.be/p.xZW3NNq9N",
-   "score": 7
-  },
-  {
    "titel": "Roze slijm en uiteraard AI: deze desinformatie krijgen Amerikanen voor de midterms te verwerken",
    "samenvatting": "'Pink slime'-sites of 'roze-slijm'-sites hebben zich tijdens de Amerikaanse verkiezingscampagne voor de midterms ontpopt tot een belangrijk instrument om de kiezers te beïnvloeden. De websites presenteren zich als onafhankelijke lokale media, maar zijn in de praktijk partijgebonden nieuwssites van Democraten of Republikeinen. Daarnaast richtten ook Russische desinformatie en AI-campagnespotjes zich tijdens deze campagne op de Amerikaanse kiezer.",
    "onderwerp": "Amerika kiest",
    "link": "https://vrtnws.be/p.y318kdEd5",
    "score": 6
+  },
+  {
+   "titel": "Burgerbeweging dient klacht in tegen nieuw vergunningsbeleid in Aalst: \"Honderden zaken getroffen\"",
+   "samenvatting": "Burgerbeweging Pro Aalst heeft een klacht ingediend bij het Agentschap Binnenlands Bestuur tegen het nieuwe vergunningsbeleid. Kappers, nachtwinkels en minimarkten krijgen strengere voorwaarden opgelegd. Zo wil Aalst naar eigen zeggen witwaspraktijken tegengaan. \"Een zaak oprichten wordt enorm moeilijk\", zegt Alex Polfliet van Pro Aalst.",
+   "onderwerp": "Economie",
+   "link": "https://vrtnws.be/p.RaJVL6Qv7",
+   "score": 5
+  },
+  {
+   "titel": "Carrefour Tessenderlo start koelafdeling weer op 1 dag na cyberaanval: \"Schade tegen eind deze week pas weggewerkt\"",
+   "samenvatting": "In Tessenderlo-Ham stelt het personeel van de lokale Carrefour alles in het werk om de koelafdeling zo snel mogelijk weer operationeel te krijgen, 1 dag na de cyberaanval. Hackers namen de controle over van koelkasten en diepvriezen in heel wat supermarkten in ons land en lieten die warme in plaats van koude lucht blazen. \"Vanmiddag komen de eerste nieuwe leveringen, maar het zal nog de hele week duren voor alles is aangevuld\", klinkt het.",
+   "onderwerp": "Economie",
+   "link": "https://vrtnws.be/p.OvkOyZ1aq",
+   "score": 5
   },
   {
    "titel": "Verkeersbelasting van je buurman opzoeken? Dat kan makkelijk op site Vlaamse Belastingdienst",
@@ -55,9 +48,20 @@
    "onderwerp": "Artificiële intelligentie",
    "link": "https://vrtnws.be/p.0YpVByLVE",
    "score": 5
+  },
+  {
+   "titel": "Vliegtuig uit Londen maakt noodlanding in Polen na bommelding, 181 mensen aan boord",
+   "samenvatting": "Een passagiersvliegtuig afkomstig uit Londen heeft een noodlanding gemaakt op de luchthaven van Warschau-Modlin na een melding van explosieven aan boord. 181 mensen bevinden zich in het vliegtuig. De luchthaven is inmiddels gesloten.",
+   "onderwerp": "Europa",
+   "link": "https://vrtnws.be/p.nwvD6AZ4p",
+   "score": 4
   }
  ],
  "quotes": [
+  {
+   "tekst": "Truth will ultimately prevail where there is pains to bring it to light.",
+   "auteur": "George Washington"
+  },
   {
    "tekst": "Pride makes us artificial and humility makes us real.",
    "auteur": "Thomas Merton"
@@ -69,10 +73,6 @@
   {
    "tekst": "Plans are nothing; planning is everything.",
    "auteur": "Dwight D. Eisenhower"
-  },
-  {
-   "tekst": "Plans are only good intentions unless they immediately degenerate into hard work.",
-   "auteur": "Peter Drucker"
   }
  ],
  "feitje": {
