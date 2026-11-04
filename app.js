@@ -41,7 +41,6 @@ const DEMO = {
     ['Voorbeeldkop van het derde nieuwsbericht', 'Een korte samenvatting in één of twee zinnen, genoeg om de kern van het bericht te begrijpen.'],
     ['Voorbeeldkop van het vierde nieuwsbericht', 'Een korte samenvatting in één of twee zinnen, genoeg om de kern van het bericht te begrijpen.'],
   ],
-  feitje: { taal: 'nl', dag: 2, maand: 'november', jaar: 1936, tekst: 'Dit is een voorbeeld van een feitje van de dag, met een korte omschrijving van wat er op deze dag gebeurde.', titel: 'Onderwerp', uitleg: 'Hier staat wat meer uitleg over het onderwerp, zodat je iets nieuws leest. Een tweede zin vult dat aan met nog wat achtergrond en context om rustig door te lezen.' },
   quotes: [['Voorbeeldquote van de dag.', 'Auteur'], ['Een tweede voorbeeldquote.', 'Auteur']],
   todos: ['Opdracht indienen', 'Boodschappen doen', 'Training voorbereiden', 'Mail beantwoorden', 'Fiets laten nakijken'],
   agenda: { 0: ['10:00 Les ontwerp', '19:00 Training'], 2: ['10:00 Les', '16:30 Tandarts'], 4: ['Deadline opdracht', '19:30 Etentje'], 5: ['14:00 Wedstrijd'], 6: ['12:00 Familiebezoek'] },
@@ -146,9 +145,6 @@ async function uitFeedsBestand(sleutel) {
   } catch (e) { /* bestand ontbreekt: rechtstreeks proberen */ }
   return null;
 }
-async function haalFeitje() {
-  try { const f = await haalFeeds(); return f && f.feitje && f.feitje.tekst ? f.feitje : null; } catch (e) { return null; }
-}
 async function haalQuotes() {
   const bestand = await uitFeedsBestand('quotes');
   if (bestand) return bestand.map(q => [q.tekst, q.auteur || '']);
@@ -236,11 +232,12 @@ function todosHtml(todos) {
 function puzzelHtml(p) {
   return '<div class="sec" style="margin-bottom:0"><h2>' + esc(p.naam) + '</h2></div>' + p.html;
 }
-function feitjeHtml(f) {
-  if (!f) return '';
-  const kop = (f.taal === 'nl' ? 'Op ' : '') + f.dag + ' ' + f.maand + ' ' + f.jaar;
-  return '<div class="sec" style="margin-bottom:0"><h2>Feitje van de dag</h2></div><div class="feit"><p class="feit-kop">' + esc(kop) + '</p><p>' + esc(f.tekst) + '</p>' +
-    (f.uitleg ? '<p><b>' + esc(f.titel) + '.</b> ' + esc(f.uitleg) + '</p>' : '') + '<p class="feit-bron">Bron: Wikipedia</p></div>';
+function weetjeHtml(w) {
+  if (!w) return '';
+  const wd = w.woord;
+  return '<div class="sec" style="margin-bottom:0"><h2>Weetje van de dag</h2></div><div class="feit"><span class="tag">' + esc(w.thema) + '</span>' +
+    '<p class="feit-kop">' + esc(w.titel) + '</p><p>' + esc(w.tekst) + '</p>' +
+    '<div class="woord"><span class="tag">Woord van de dag</span><p><b>' + esc(wd.w) + '</b> ' + esc(SOORT[wd.k] || '') + ': ' + esc(wd.b) + '. <i>' + esc(wd.z) + '</i>' + (wd.o ? ' ' + esc(wd.o) : '') + '</p></div></div>';
 }
 
 /* ---------- Google: agenda en taken ---------- */
@@ -336,7 +333,7 @@ function initGoogle() {
 initGoogle.n = 0;
 
 /* ---------- krant bouwen ---------- */
-const STAAT = { start: null, weer: null, nieuws: null, q1: null, q2: null, puzzels: [], agenda: {}, todos: [], mislukt: [], token: null, tokenTot: 0, feedDatum: '', feitje: null, past: true };
+const STAAT = { start: null, weer: null, nieuws: null, q1: null, q2: null, puzzels: [], agenda: {}, todos: [], mislukt: [], token: null, tokenTot: 0, feedDatum: '', weetje: null, past: true };
 function status(t) { $('status').textContent = t || ''; }
 function schaal() {
   const f = Math.min(1, (window.innerWidth - 16) / 793.7);
@@ -352,15 +349,13 @@ function teken() {
     '<section class="sheet"><header class="mast" style="padding-bottom:2mm"><h1 style="font-size:26pt">Puzzels &amp; To-do’s</h1></header>' + quoteHtml(S.q2) +
     '<div class="row1"><div class="sec" style="margin-bottom:0"><h2>To-do’s</h2>' + todosHtml(S.todos) + '</div>' +
     '<div>' + puzzelHtml(S.puzzels[0]) + '</div></div>' +
-    (S.feitje
-      ? '<div class="row2 duo"><div>' + puzzelHtml(S.puzzels[1]) + '</div><div>' + feitjeHtml(S.feitje) + '</div></div>'
-      : '<div class="row2"><div>' + puzzelHtml(S.puzzels[1]) + '</div></div>') +
+    '<div class="row2 duo"><div>' + puzzelHtml(S.puzzels[1]) + '</div><div>' + weetjeHtml(S.weetje) + '</div></div>' +
     '<div class="sol">' + S.puzzels.map(p => esc(p.naam.toLowerCase() + ': ' + p.oplossing)).join('<br>') + '</div></section>';
   document.querySelectorAll('.sheet').forEach(x => { x.style.zoom = 1; });
   S.past = pasAan();
   schaal();
 }
-// Past alles niet op een pagina? Dan maken we agenda, nieuws, to-do's en feitje stapsgewijs iets kleiner.
+// Past alles niet op een pagina? Dan maken we agenda, nieuws, to-do's en weetje stapsgewijs iets kleiner.
 function pasAan() {
   let past = true;
   document.querySelectorAll('.sheet').forEach(sh => {
@@ -389,13 +384,13 @@ async function bouwKrant() {
 
   const limiet = () => new Promise((_, nee) => setTimeout(() => nee(new Error('time-out')), 15000));
   const wacht = (naam, p) => Promise.race([p, limiet()]).catch(() => { mislukt.push(naam); return null; });
-  const [weer, nieuws, quotes, feitje] = await Promise.all(demo
-    ? [DEMO.weer, DEMO.nieuws, DEMO.quotes, DEMO.feitje]
-    : [wacht('weer', haalWeer()), wacht('nieuws', haalNieuws()), wacht('quotes', haalQuotes()), haalFeitje()]);
+  const [weer, nieuws, quotes] = await Promise.all(demo
+    ? [DEMO.weer, DEMO.nieuws, DEMO.quotes]
+    : [wacht('weer', haalWeer()), wacht('nieuws', haalNieuws()), wacht('quotes', haalQuotes())]);
 
   const dagnr = Math.floor(start.getTime() / 86400000);
   Object.assign(STAAT, {
-    start, weer, nieuws, mislukt, feitje,
+    start, weer, nieuws, mislukt, weetje: kiesWeetje(start),
     q1: (quotes && quotes[0] && [...quotes[0], true]) || SPREUKEN[dagnr % SPREUKEN.length],
     q2: (quotes && quotes[1] && [...quotes[1], true]) || SPREUKEN[(dagnr + 3) % SPREUKEN.length],
     puzzels: kiesPuzzels(dagnr).map((type, i) => maakPuzzel(type, maakRng(dagnr * 131 + i * 17 + 5))),
