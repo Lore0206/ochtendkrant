@@ -1,8 +1,8 @@
 {
  "nieuws": [
   {
-   "titel": "Politie mag slot openbreken om mensen zonder papieren te arresteren die gevaar vormen: parlement stemt over omstreden wet",
-   "samenvatting": "Deze namiddag stemt het parlement over de omstreden wet rond woonstbetredingen. De politie zal door die wet een privéwoning kunnen binnengaan om mensen zonder geldige papieren te arresteren. Er gelden verschillende voorwaarden, maar critici vinden die niet duidelijk genoeg. Wat staat er in de wet zelf?",
+   "titel": "Kamer keurt omstreden wet over woonstbetredingen goed na fel debat dat de hele nacht heeft geduurd",
+   "samenvatting": "De Kamer heeft het omstreden wetsontwerp goedgekeurd dat woonstbetredingen mogelijk maakt bij mensen zonder verblijfsrecht die een gevaar vormen voor de openbare orde en de nationale veiligheid. Het parlement zette het licht iets na 5 uur vanmorgen op groen na een fel en lang debat dat de hele nacht heeft geduurd. De politie zal door de wet een privéwoning kunnen binnengaan om mensen zonder geldige papieren te arresteren. Er gelden voorwaarden, maar critici vinden die niet duidelijk genoeg.",
    "onderwerp": "Politiek",
    "link": "https://vrtnws.be/p.BlYa8LXw9",
    "score": 10
@@ -15,11 +15,32 @@
    "score": 9
   },
   {
+   "titel": "Trump had ontmoeting met Russische gezant Dmitriev: \"Akkoord over oorlog kan heel Europa omvatten\"",
+   "samenvatting": "",
+   "onderwerp": "Europa",
+   "link": "https://vrtnws.be/p.dLRGll9EV",
+   "score": 7
+  },
+  {
    "titel": "Verkiezingsuitslag Amerikaanse midterms ook voelbaar op de beurs: technologie-index Nasdaq krijgt stevige klappen",
-   "samenvatting": "Een dag na het verlies van de Republikeinen in de Amerikaanse midterms verkopen Amerikaanse beleggers massaal AI-aandelen. Ze maken zich onder meer zorgen over de uitbouw van AI-datacentra nu de Democraten de macht in het Huis en de Senaat naar zich toe hebben getrokken. Vooral de Amerikaanse technologie-index Nasdaq krijgt een stevige tik.",
+   "samenvatting": "Amerikaanse technologieaandelen krijgen zware klappen. Vooral bedrijven die betrokken zijn bij de uitbouw van AI-datacenters gaan stevig lager. Beleggers maken zich al langer zorgen over de hoge financieringskosten en de sterke koersstijgingen van AI-aandelen. De uitslag van de Amerikaanse midterms zorgen nu voor bijkomende onzekerheid.",
    "onderwerp": "Economie",
    "link": "https://vrtnws.be/p.0YpAJDO1M",
    "score": 7
+  },
+  {
+   "titel": "Israëlische president Herzog duidt zondag formateur aan om nieuwe regering te vormen",
+   "samenvatting": "",
+   "onderwerp": "Midden-Oosten",
+   "link": "https://vrtnws.be/p.GvoaGG9Xd",
+   "score": 7
+  },
+  {
+   "titel": "Jan Balliauw na bommeldingen op Europese vluchten: \"Rusland zaait chaos bij ons, maar wij kunnen hetzelfde doen in Rusland\"",
+   "samenvatting": "Europa moet zich veel harder opstellen tegen Rusland, dat intussen een \"schaduwoorlog\" voert tegen ons. Dat zegt Ruslandkenner Jan Balliauw in VRT NWS Terzake na de golf van bommeldingen op Europese vluchten. \"Moskou zaait chaos bij ons, maar Europa kan dat omgekeerd ook doen.\"",
+   "onderwerp": "Rusland",
+   "link": "https://vrtnws.be/p.jGklRZ7OY",
+   "score": 6
   },
   {
    "titel": "\"Geef de Iraniërs een eerlijke kans om voor hun vrijheid te vechten\", zegt Pahlavi, zoon van laatste sjah, in interview met VRT NWS",
@@ -34,30 +55,13 @@
    "onderwerp": "Amerika kiest",
    "link": "https://vrtnws.be/p.6KpPe79m4",
    "score": 6
-  },
-  {
-   "titel": "Duitse politicus Hubert Aiwanger (55) dood aangetroffen in hotelkamer",
-   "samenvatting": "In Berlijn is de Duitse politicus Hubert Aiwanger (55) dood aangetroffen in zijn hotelkamer. Aiwanger was vicepremier en minister van Economische Zaken in de deelstaat Beieren. De Duitse politiek reageert aangeslagen: \"Beieren zal anders zijn zonder hem\".",
-   "onderwerp": "Duitsland",
-   "link": "https://vrtnws.be/p.nwvMqw5QJ",
-   "score": 5
-  },
-  {
-   "titel": "Bel-20 voor het eerst boven 6.000 punten: \"Dankzij overdaad aan degelijke klassieke bedrijven\"",
-   "samenvatting": "De Bel-20, de index van de 20 belangrijkste aandelen op de Brusselse beurs, heeft een nieuw record neergezet en bereikte de kaap van 6.000 punten. Bij de opening van de beurzen deze ochtend tikte de Bel-20 een koers van 6.031 punten aan. \"We zitten eindelijk op een niveau waarop we weer meedoen\", zegt financieel econoom Tom Simonts.",
-   "onderwerp": "Economie",
-   "link": "https://vrtnws.be/p.xZY47mP81",
-   "score": 5
-  },
-  {
-   "titel": "Man (26) rijdt in op politieauto in Nederlands-Limburg na achtervolging door Belgische politie",
-   "samenvatting": "Een 26-jarige man uit Roermond is opgepakt nadat hij in het Echt-Susteren met zijn auto op een politieauto is ingereden. Daarbij raakte een agent gewond. De Belgische politie achtervolgde de man tot over de grens, waarom is nog niet duidelijk.",
-   "onderwerp": "Nederland",
-   "link": "https://vrtnws.be/p.8epBpE4WY",
-   "score": 4
   }
  ],
  "quotes": [
+  {
+   "tekst": "Difficulties are meant to rouse, not discourage. The human spirit is to grow strong by conflict.",
+   "auteur": "William Ellery Channing"
+  },
   {
    "tekst": "I am the greatest, I said that even before I knew I was.",
    "auteur": "Muhammad Ali"
@@ -69,20 +73,16 @@
   {
    "tekst": "Truth will ultimately prevail where there is pains to bring it to light.",
    "auteur": "George Washington"
-  },
-  {
-   "tekst": "Pride makes us artificial and humility makes us real.",
-   "auteur": "Thomas Merton"
   }
  ],
  "feitje": {
   "taal": "en",
-  "dag": 5,
+  "dag": 6,
   "maand": "november",
-  "jaar": 1952,
-  "tekst": "An earthquake struck the Kamchatka Peninsula, triggering a major tsunami that affected the Kuril Islands and other parts of the Pacific Ocean.",
-  "titel": "1952 Severo-Kurilsk earthquake",
-  "uitleg": "The 1952 Severo-Kurilsk earthquake struck off the coast of the Kamchatka Peninsula. The Mw 8.8–9.0 earthquake occurred on 5 November 1952 at 04:58 local time, triggering a major tsunami that struck the Kuril Islands and the Kamchatka Peninsula within the Russian SFSR in the Soviet Union. This led to the destruction of many settlements in Sakhalin Oblast and Kamchatka Oblast, while the main impact struck the town of Severo-Kurilsk. It remains the most powerful earthquake ever recorded in Russia and the fifth most powerful earthquake ever recorded in the world since modern seismography began in 1900."
+  "jaar": 1944,
+  "tekst": "The B Reactor at the Hanford Site in the U.S. state of Washington began producing plutonium, with the facility later going on to create more for nearly the entire American nuclear arsenal.",
+  "titel": "B Reactor",
+  "uitleg": "The B Reactor at the Hanford Site, near Richland, Washington, was the first large-scale nuclear reactor ever built, at 250 MW. It achieved criticality on September 26, 1944. This reactor was of vital importance to the Manhattan Project, the United States nuclear weapons development program during World War II. Its purpose was to convert part of its natural uranium fuel into plutonium-239 by neutron activation, for use in nuclear weapons. Pure plutonium was then chemically separated at the site's T Plant, as an alternative to the Project's uranium enrichment plants in Tennessee."
  },
- "datum": "2026-11-05"
+ "datum": "2026-11-06"
 }
