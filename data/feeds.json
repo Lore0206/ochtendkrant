@@ -1,32 +1,11 @@
 {
  "nieuws": [
   {
-   "titel": "Hoe moet Europa reageren op cyberaanvallen? \"Terughacken, want sancties maken geen indruk\"",
-   "samenvatting": "Europese landen die het slachtoffer worden van cyberaanvallen, moeten de buitenlandse veiligheidsdiensten of hackers die verantwoordelijk zijn voor die aanvallen, zoveel mogelijk terughacken. Dat vindt Tim Haesebrouck, professor internationale politiek (UGent) en onderzoeker van hybride oorlogsvoering. Niet om een maatschappij te destabiliseren, maar om een signaal te geven.",
-   "onderwerp": "Rusland",
-   "link": "https://vrtnws.be/p.BlYq8WPKk",
-   "score": 10
-  },
-  {
-   "titel": "Israëlische president geeft oppositieleider Eisenkot opdracht om regering te vormen",
-   "samenvatting": "",
-   "onderwerp": "Midden-Oosten",
-   "link": "https://vrtnws.be/p.GvoaGG9Xd",
-   "score": 7
-  },
-  {
-   "titel": "Politicoloog Dave Sinardet over crisis: \"Veel deining, veel drama, maar bitter weinig veranderd\"",
-   "samenvatting": "",
-   "onderwerp": "Politiek",
-   "link": "https://vrtnws.be/p.nwvwmBOBR",
-   "score": 7
-  },
-  {
-   "titel": "Startende ondernemers kunnen btw-nummer nog altijd niet aanvragen na cyberaanval: \"5.500 dossiers in de wacht\"",
-   "samenvatting": "Online een btw-nummer aanvragen om te kunnen starten als zelfstandige, is nog steeds niet mogelijk, door de cyberaanval bij de Overheidsdienst Financiën vorige week. Dat schrijft De Tijd en is bevestigd aan onze redactie.",
-   "onderwerp": "Economie",
-   "link": "https://vrtnws.be/p.qENPjyvNK",
-   "score": 7
+   "titel": "Jongeman van 24 met wapenvergunning en \"ultranationalistische ideeën\": dit weten we (nog niet) over schutter in Krakau",
+   "samenvatting": "De man die zaterdag 6 mensen doodschoot in het centrum van Krakau en wellicht ook zijn ouders en zus vermoordde, wordt in de Poolse pers geïdentificeerd als de 24-jarige Michal O. Volgens buurtbewoners een \"normale jongen\", maar hij is ook iemand die op sociale media opschept dat hij een wapen bezit. Volgens de Poolse regering is hij \"gefascineerd door extreemrechtse ideologieën\", maar bewijzen gaf ze nog niet.",
+   "onderwerp": "Europa",
+   "link": "https://vrtnws.be/p.lObGp7o7k",
+   "score": 6
   },
   {
    "titel": "Studente Luna vraagt hulp voor familie in Gaza die nu ook getroffen is door noodweer: \"Ze verliezen de hoop\"",
@@ -36,11 +15,18 @@
    "score": 6
   },
   {
-   "titel": "Na winst voor Democraten bij 'midterms' in Texas: Houston beperkt samenwerking met ICE",
-   "samenvatting": "De stad Houston, in Texas, beperkt de samenwerking met immigratiedienst ICE na de tussentijdse verkiezingen in de Verenigde Staten. Dat heeft de Democratische burgemeester John Whitmire aangekondigd. \"Ik doe dit om een genezingsproces in gang te zetten, en in het besef dat verkiezingen ertoe doen\", zegt hij.",
-   "onderwerp": "Amerika kiest",
-   "link": "https://vrtnws.be/p.5waLK3ELl",
-   "score": 6
+   "titel": "Twintiger aangehouden na dreiging met explosiegevaar bij woonzorgcentrum in Lippelo",
+   "samenvatting": "De twintigjarige man die vrijdag werd opgepakt na een incident met een verdacht voertuig aan woonzorgcentrum Gravenkasteel in Lippelo (Puurs-Sint-Amands), is aangehouden en overgebracht naar de gevangenis. Dat meldt de lokale politiezone Rivierenland.",
+   "onderwerp": "Justitie",
+   "link": "https://vrtnws.be/p.kQO7kjJjO",
+   "score": 5
+  },
+  {
+   "titel": "Pastoor van Jette zal kerkgangers niet vragen om meer geld te geven: \"De gemeenschap geeft al genoeg\"",
+   "samenvatting": "Pastoor Dirk Vannetelbosch in Jette is niet van plan om kerkgangers aan te moedigen meer geld te doneren. Het aartsbisdom Mechelen-Brussel deed die oproep om de stijgende energiekosten op te vangen. Wel staat de verwarming in de kerk er al langer wat lager. \"Onze parochiegemeenschap geeft al genoeg\", zegt de pastoor.",
+   "onderwerp": "Binnenland",
+   "link": "https://vrtnws.be/p.qEN5ELoml",
+   "score": 5
   },
   {
    "titel": "Wat als koning Filip morgen aan dementie lijdt? De vergeten regels van het regentschap",
@@ -55,6 +41,20 @@
    "onderwerp": "Technologie & Wetenschap",
    "link": "https://vrtnws.be/p.BlYaZMxwW",
    "score": 5
+  },
+  {
+   "titel": "Indringer op Noors koninklijk landgoed: Marius Borg Høiby werkt aanvaller naar buiten",
+   "samenvatting": "De politie heeft een verdachte opgepakt die de oudste zoon van de Noorse koningin Mette-Marit heeft aangevallen. De man drong het koninklijke landgoed binnen en zocht Marius Borg Høiby in zijn huis op.",
+   "onderwerp": "Europa",
+   "link": "https://vrtnws.be/p.7nX0e8n8R",
+   "score": 4
+  },
+  {
+   "titel": "4 doden en meer dan 80 gewonden na botsing tussen passagierstreinen in Egypte",
+   "samenvatting": "In Egypte zijn minstens 4 doden geteld na een botsing tussen 2 passagierstreinen. Er zijn ook meer dan 80 gewonden.",
+   "onderwerp": "Afrika",
+   "link": "https://vrtnws.be/p.Nv3jJMxXG",
+   "score": 3
   }
  ],
  "quotes": [
