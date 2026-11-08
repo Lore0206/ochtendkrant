@@ -1,11 +1,18 @@
 {
  "nieuws": [
   {
-   "titel": "Hoe moet Europa reageren op cyberaanvallen van Rusland? \"Terughacken, want sancties maken geen indruk\"",
-   "samenvatting": "Europese landen die het slachtoffer worden van Russische cyberaanvallen, moeten de Russische veiligheidsdiensten of hackers die verantwoordelijk zijn voor die aanvallen, zoveel mogelijk terughacken. Dat vindt Tim Haesebrouck, professor internationale politiek (UGent) en onderzoeker van hybride oorlogsvoering. Niet om de Russische maatschappij te destabiliseren, maar om een signaal te geven aan de overheid.",
+   "titel": "Hoe moet Europa reageren op cyberaanvallen? \"Terughacken, want sancties maken geen indruk\"",
+   "samenvatting": "Europese landen die het slachtoffer worden van cyberaanvallen, moeten de buitenlandse veiligheidsdiensten of hackers die verantwoordelijk zijn voor die aanvallen, zoveel mogelijk terughacken. Dat vindt Tim Haesebrouck, professor internationale politiek (UGent) en onderzoeker van hybride oorlogsvoering. Niet om een maatschappij te destabiliseren, maar om een signaal te geven.",
    "onderwerp": "Rusland",
    "link": "https://vrtnws.be/p.BlYq8WPKk",
    "score": 10
+  },
+  {
+   "titel": "Israëlische president geeft oppositieleider Eisenkot opdracht om regering te vormen",
+   "samenvatting": "",
+   "onderwerp": "Midden-Oosten",
+   "link": "https://vrtnws.be/p.GvoaGG9Xd",
+   "score": 7
   },
   {
    "titel": "Politicoloog Dave Sinardet over crisis: \"Veel deining, veel drama, maar bitter weinig veranderd\"",
@@ -22,11 +29,11 @@
    "score": 7
   },
   {
-   "titel": "Politici vallen over uitspraken Roland Duchâtelet over ouderenzorg: \"Hoe gestoord kan je zijn?\"",
-   "samenvatting": "Ondernemer Roland Duchâtelet zei in de talkshow 'De tafel van Ruben' dat hij vindt dat er nagedacht moet worden over dure behandelingen van ouderen aan het einde van hun leven. Daar is volgens hem een pak geld te vinden dat de begroting ten goede zou komen. Het voorstel stuit op stevige kritiek. \"Met alle respect, maar hoe gestoord kan je zijn om zulke uitspraken te doen?\", trekt CD&V-voorzitter Sammy Mahdi van leer.",
-   "onderwerp": "Economie",
-   "link": "https://vrtnws.be/p.JN48NoqY8",
-   "score": 7
+   "titel": "Studente Luna vraagt hulp voor familie in Gaza die nu ook getroffen is door noodweer: \"Ze verliezen de hoop\"",
+   "samenvatting": "\"Ze verliezen de hoop.\" Dat zegt de 19-jarige KU Leuven-studente Luna Muammar over haar familie in de Gazastrook. Haar ouders, broers en andere familieleden wonen in tenten in Khan Younis en zijn getroffen door het zware noodweer van de voorbije dagen. Ze roept de Belgische overheid op om meer te doen voor Palestijnen met een Belgisch visum die nog altijd vastzitten in Gaza.",
+   "onderwerp": "Midden-Oosten",
+   "link": "https://vrtnws.be/p.APQ8ZwWew",
+   "score": 6
   },
   {
    "titel": "Na winst voor Democraten bij 'midterms' in Texas: Houston beperkt samenwerking met ICE",
@@ -47,13 +54,6 @@
    "samenvatting": "Maandag begint in Antalya (Turkije) de 31e VN-klimaattop met een aantal open vragen: wie heeft nu eigenlijk de touwtjes in handen, Australië of Turkije? Wordt elektrificatie het grote thema? En: wat kan de Amerikaanse delegatie betekenen na de nederlaag van Trump? De klimaattop in 9 vragen en antwoorden.",
    "onderwerp": "Technologie & Wetenschap",
    "link": "https://vrtnws.be/p.BlYaZMxwW",
-   "score": 5
-  },
-  {
-   "titel": "\"Vraag kerkgangers meer te doneren\": aartsbisdom geeft tips om energiekosten te drukken",
-   "samenvatting": "Het aartsbisdom Mechelen-Brussel roept alle parochies op om hun energieverbruik terug te dringen. In een brief geeft het verschillende tips om de energiefactuur te verlagen, zoals vieringen bundelen in de meest energiezuinige kerken en de verwarming een graadje lager zetten. Tegelijk wil het aartsbisdom kerkgangers aanmoedigen om meer te doneren.",
-   "onderwerp": "Binnenland",
-   "link": "https://vrtnws.be/p.VLN0aa3KV",
    "score": 5
   }
  ],
@@ -77,12 +77,12 @@
  ],
  "feitje": {
   "taal": "en",
-  "dag": 7,
+  "dag": 8,
   "maand": "november",
-  "jaar": 1991,
-  "tekst": "Magic Johnson announced his retirement from professional basketball due to HIV infection.",
-  "titel": "Magic Johnson",
-  "uitleg": "Earvin \"Magic\" Johnson Jr. is an American businessman and former professional basketball player. He is widely regarded as the greatest point guard of all time and one of the greatest basketball players in history. Johnson spent his entire career with the Los Angeles Lakers in the National Basketball Association (NBA). After winning a national championship with the Michigan State Spartans in 1979, Johnson was selected first overall in the 1979 NBA draft by the Lakers, then led the team to five NBA championships during their \"Showtime\" era."
+  "jaar": 1999,
+  "tekst": "German newspaper Der Spiegel publishes a report by the Federal Intelligence Service accusing figures in Liechtenstein of cooperating with organized crime.",
+  "titel": "Der Spiegel",
+  "uitleg": "Der Spiegel is a German weekly news magazine published in Hamburg. With a weekly circulation of about 724,000 copies in 2022, it is one of the largest such publications in Europe. It was founded in 1947 by John Seymour Chaloner, a British army officer, and Rudolf Augstein, a former Wehrmacht radio operator who was recognized in 2000 by the International Press Institute as one of the fifty World Press Freedom Heroes."
  },
- "datum": "2026-11-07"
+ "datum": "2026-11-08"
 }
