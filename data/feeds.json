@@ -1,13 +1,6 @@
 {
  "nieuws": [
   {
-   "titel": "MR-voorzitter Bouchez en minister Clarinval praten 2 uur met premier De Wever",
-   "samenvatting": "",
-   "onderwerp": "Politiek",
-   "link": "https://vrtnws.be/p.nwvwmBOBR",
-   "score": 9
-  },
-  {
    "titel": "Olie- en gasprijzen dalen opnieuw door hoop op oplossing voor oorlog tussen VS en Iran, maar blijven hoog",
    "samenvatting": "",
    "onderwerp": "Economie",
@@ -16,24 +9,17 @@
   },
   {
    "titel": "Aantal vergelijkingen van energiecontracten via V-test zit opnieuw in de lift",
-   "samenvatting": "Het aantal mensen dat zijn energiecontract vergelijkt via de V-test, de prijsvergelijker van de Vlaamse Nutsregulator (VNR), zit opnieuw in de lift. De VNR verwacht dit jaar 1,6 miljoen vergelijkingen, tegenover 1,3 miljoen in 2025. Dat blijkt uit cijfers die Vlaams Parlementslid en fractieleider Kris Verduyckt (Vooruit) heeft opgevraagd.",
+   "samenvatting": "Het aantal mensen dat zijn energiecontract vergelijkt via de V-test, de prijsvergelijker van de Vlaamse Nutsregulator (VNR), zit opnieuw in de lift. De VNR verwacht dit jaar 1,6 miljoen vergelijkingen, tegenover 1,3 miljoen in 2025. Dat blijkt uit cijfers die Vlaams parlementslid en fractieleider Kris Verduyckt (Vooruit) heeft opgevraagd.",
    "onderwerp": "Binnenland",
    "link": "https://vrtnws.be/p.lObGKeKnX",
    "score": 7
   },
   {
-   "titel": "Dader van aanslag in Krakau overleden, Openbaar Ministerie: \"Nog geen verband gevonden met bepaalde ideologie\"",
-   "samenvatting": "",
-   "onderwerp": "Europa",
-   "link": "https://vrtnws.be/p.11pMV4eWq",
-   "score": 7
-  },
-  {
-   "titel": "Affaire met spionne doet Nvidia-baas Huang wankelen: dit moet je over hem weten",
-   "samenvatting": "Nvidia-topman Jensen Huang staat in het oog van de storm, nu hij een amoureuze affaire blijkt te hebben met een dame die volgens de inlichtingendiensten een Chinese spionne zou zijn. De onthulling komt net op het moment dat Huangs populariteit als AI-goeroe hoge toppen scheert. Maar waar komt Huang eigenlijk vandaan? En welke gevolgen kan die affaire hebben?",
-   "onderwerp": "Economie",
-   "link": "https://vrtnws.be/p.0YpdMVLbQ",
-   "score": 7
+   "titel": "\"Ik geloof er niets van\": inwoners van Donbas kijken met wantrouwen naar onderhandelingen tussen Oekraïne en Rusland",
+   "samenvatting": "De Donbas staat centraal in de nieuwe onderhandelingen tussen Oekraïne, Rusland en de Verenigde Staten in Abu Dhabi. Voor Moskou moet ook het laatste Oekraïense deel van de regio worden afgestaan. VRT NWS trok naar het dorpje Oleksandrivka, waar het front steeds dichterbij komt en veel wantrouwen is over de gesprekken. \"Je begrijpt toch dat we Poetin niet kunnen vertrouwen?\"",
+   "onderwerp": "Rusland",
+   "link": "https://vrtnws.be/p.M9mj4yjm3",
+   "score": 6
   },
   {
    "titel": "Broer van Hongaarse oud-premier Viktor Orbán aangehouden op verdenking van mensenhandel",
@@ -43,7 +29,7 @@
    "score": 6
   },
   {
-   "titel": "Frankrijk beschuldigt Iran van de grootschalige cyberaanval op supermarkten",
+   "titel": "Frankrijk beschuldigt Iran van de grootschalige cyberaanval op koelkasten in supermarkten",
    "samenvatting": "De Franse autoriteiten vermoeden dat Iran achter de cyberaanvallen op koelinstallaties in Frankrijk van oktober zit. Dat heeft de Franse minister van Buitenlandse Zaken, Jean-Noël Barrot, bekendgemaakt. Het parket van Parijs heeft een onderzoek geopend en internationale arrestatiebevelen uitgevaardigd tegen 3 leden van de cyberafdeling van de Iraanse Revolutionaire Garde.",
    "onderwerp": "Frankrijk",
    "link": "https://vrtnws.be/p.Nv3jQ1eKn",
@@ -55,6 +41,20 @@
    "onderwerp": "Justitie",
    "link": "https://vrtnws.be/p.ZWK1jK6Am",
    "score": 5
+  },
+  {
+   "titel": "Duif, havik of weer een uil? Dit zijn de 2 kandidaten om ECB-voorzitter Christine Lagarde op te volgen",
+   "samenvatting": "Vanmorgen kwam de Eurogroep samen om de mogelijke opvolger van Christine Lagarde, de voorzitter van de Europese Centrale Bank (ECB), te bespreken. Het gaat nog tussen een Nederlander en een Spanjaard. Een korte kennismaking.",
+   "onderwerp": "Economie",
+   "link": "https://vrtnws.be/p.PqO7X3WoO",
+   "score": 5
+  },
+  {
+   "titel": "Kalkenvaart in Laarne krijgt nieuwe pomp: \"Meer water, meer vissen en minder energieverbruik\"",
+   "samenvatting": "Aan de Kalkenvaart in Laarne start vandaag de bouw van een nieuw pompgemaal. Dat is een installatie met meerdere krachtige pompen die het waterpeil regelt. De huidige pomp dateert uit de jaren 70 en was destijds bedoeld om het gebied droog te houden voor de landbouw. Nu het een natuurgebied is, vormt die verdroging juist een probleem, zegt Katrien Smet van de Vlaamse Milieumaatschappij.",
+   "onderwerp": "Milieu & Klimaat",
+   "link": "https://vrtnws.be/p.w70v9oqLe",
+   "score": 4
   }
  ],
  "quotes": [
@@ -77,12 +77,12 @@
  ],
  "feitje": {
   "taal": "en",
-  "dag": 9,
+  "dag": 10,
   "maand": "november",
-  "jaar": 1928,
-  "tekst": "The Great Mecca Feast, the first documentary film on the Hajj, premiered in the Netherlands.",
-  "titel": "The Great Mecca Feast",
-  "uitleg": "The Great Mecca Feast is a 1928 silent documentary film by George Krugers. Divided into four acts, it opens with a group of Muslim men from the Dutch East Indies beginning the Hajj pilgrimage, then showcases elements of everyday life and worship in the Hejaz region of the Arabian Peninsula – including the Hajj itself. As Mecca had long been closed to non-Muslims, Krugers passed as a Muslim and recorded film and still-photographic documentation of the pilgrimage. In this endeavour, he was supported by people in both the Dutch East Indies and the Hejaz."
+  "jaar": 1937,
+  "tekst": "Brazilian president Getúlio Vargas led a coup against his own constitutional government, establishing the dictatorial Estado Novo regime.",
+  "titel": "Getúlio Vargas",
+  "uitleg": "Getúlio Dornelles Vargas was a Brazilian military officer, lawyer, and politician who served as the 14th and 17th president of Brazil, from 1930 to 1945 and from 1951 until his suicide in 1954. Due to his long and controversial tenure as Brazil's provisional, constitutional, dictatorial and democratic leader, he is considered by historians as the most influential Brazilian politician of the 20th century."
  },
- "datum": "2026-11-09"
+ "datum": "2026-11-10"
 }
