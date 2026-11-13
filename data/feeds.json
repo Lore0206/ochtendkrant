@@ -1,17 +1,31 @@
 {
  "nieuws": [
   {
-   "titel": "De Wever plant morgen nieuwe gesprekken met vicepremiers en tegen de avond kernkabinet",
+   "titel": "Premier De Wever roept vanavond om 19 uur kernkabinet bijeen",
    "samenvatting": "",
    "onderwerp": "Politiek",
    "link": "https://vrtnws.be/p.nwvwmBOBR",
-   "score": 7
+   "score": 9
   },
   {
-   "titel": "1.900 miljard dollar verdampt in een maand: waarom ook jij de beursklap van Nvidia zou kunnen voelen",
-   "samenvatting": "Nvidia krijgt klappen op de beurs nu CEO Jensen Huang opstapt als CEO na het nieuws over enkele buitenechtelijke liefdesaffaires. En dat is niet alleen een probleem voor speculanten en grote aandeelhouders. Want Nvidia is zo aanwezig bij beleggers dat iedereen die wat centen in een ETF of pensioenfonds heeft zitten dit zou kunnen voelen.",
+   "titel": "\"Olie-aanbod overtreft voor het eerst sinds de start van Iran-oorlog de vraag\", dieselprijs daalt",
+   "samenvatting": "",
    "onderwerp": "Economie",
-   "link": "https://vrtnws.be/p.APQNanD6k",
+   "link": "https://vrtnws.be/p.6K7w8D3Y0",
+   "score": 8
+  },
+  {
+   "titel": "Wallonië wil zijn provincies afschaffen: kan dat ook werken in Vlaanderen?",
+   "samenvatting": "De Waalse regering wil haar provincies tegen 2031 afschaffen. Ook in Vlaanderen woedt die discussie al jaren. Provincies hebben andere functies in Wallonië en ook in Vlaanderen is er nog veel politieke weerstand. Wat houden de Waalse plannen precies in en hoe kijken Vlaamse provinciebesturen ernaar?",
+   "onderwerp": "Politiek",
+   "link": "https://vrtnws.be/p.jGk5lwaWx",
+   "score": 8
+  },
+  {
+   "titel": "Bitcoin duikt onder kaap van 70.000 dollar: waarom een sterke dollar en hoge rente cryptomunten raken",
+   "samenvatting": "De waarde van de bitcoin is de afgelopen uren onder de kaap van 70.000 dollar gedoken en de waarde van ethereum onder de 2.000 dollar. Cryptomunten krijgen klappen door de economische onzekerheid. Die doet beleggers naar minder risicovolle beleggingen grijpen.",
+   "onderwerp": "Economie",
+   "link": "https://vrtnws.be/p.ew4G4XBwq",
    "score": 7
   },
   {
@@ -19,20 +33,6 @@
    "samenvatting": "In Nederland heeft een nipte meerderheid van de Tweede Kamer voor het belastingplan gestemd. Opvallend: de VVD stemde tegen. De regeringspartij verzet zich tegen een nieuwe 'miljonairstaks', die deel uitmaakt van het plan en is goedgekeurd met de steun van de linkse oppositie. Het is nu onzeker of de regering van premier Rob Jetten kan doorgaan.",
    "onderwerp": "Nederland",
    "link": "https://vrtnws.be/p.11poB931l",
-   "score": 6
-  },
-  {
-   "titel": "Nog geen enkele druppel diesel uit Rusland heeft VS bereikt (en toch profiteert vooral Poetin van dieseldeal)",
-   "samenvatting": "De dieseldeal tussen Donald Trump en Vladimir Poetin heeft vooral Rusland in de kaart gespeeld. Dat zegt Ruslandkenner Marijn Trio nu blijkt dat nog geen enkele lading diesel uit Rusland de VS heeft bereikt. \"Trump wilde vooral de indruk wekken dat hij het probleem van de hoge brandstofprijzen aanpakte in de aanloop naar de tussentijdse verkiezingen.\"",
-   "onderwerp": "Rusland",
-   "link": "https://vrtnws.be/p.QAbleJZ6o",
-   "score": 6
-  },
-  {
-   "titel": "Quintin verdedigt uitspraken over betrokkenheid Iran bij cyberaanvallen: \"Voldoende elementen\"",
-   "samenvatting": "",
-   "onderwerp": "Technologie & Wetenschap",
-   "link": "https://vrtnws.be/p.lObLR0VbV",
    "score": 6
   },
   {
@@ -50,11 +50,11 @@
    "score": 5
   },
   {
-   "titel": "\"Onschuldige mensen gaan achter slot en grendel\": LGBTQIA+-gemeenschap betoogt aan ambassade Turkije",
-   "samenvatting": "Ngo Herhalde, Amnesty International en çavaria hebben betoogd aan de ambassade van Turkije in Brussel. Ze hekelen de situatie voor LGBTQIA+-mensen die volgens hen steeds erger wordt onder het beleid van president Erdogan, zeker nu de regering de actie 'Mijn gezin is veilig' heeft gelanceerd.",
-   "onderwerp": "Binnenland",
-   "link": "https://vrtnws.be/p.E1dPvndnj",
-   "score": 5
+   "titel": "Bende veroordeeld voor handel in wapens en drugs: 10 jaar cel voor kopstukken (23 en 25 jaar) uit Heusden-Zolder",
+   "samenvatting": "De 2 kopstukken van de bende uit Heusden-Zolder die zich bezighield met wapen- en drugshandel, zijn veroordeeld tot 10 jaar cel. Ze krijgen ook een boete van elk 300.000 euro. Er werden nog 7 andere betrokkenen veroordeeld. De bende werd vorig jaar opgerold met behulp van een undercoveragent.",
+   "onderwerp": "Justitie",
+   "link": "https://vrtnws.be/p.oLqpmEWYO",
+   "score": 3
   }
  ],
  "quotes": [
