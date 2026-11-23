@@ -1,6 +1,20 @@
 {
  "nieuws": [
   {
+   "titel": "Kernkabinet komt om 9.30 uur samen over begroting, premier daarna naar koning: \"Er wordt opnieuw naar Vooruit gekeken\"",
+   "samenvatting": "",
+   "onderwerp": "Politiek",
+   "link": "https://vrtnws.be/p.nwvwmBOBR",
+   "score": 9
+  },
+  {
+   "titel": "Drones treffen nu ook Maltees vrachtschip in Libische haven, na eerdere explosie op Russisch oorlogsschip",
+   "samenvatting": "In een haven aan de kust van Libië is opnieuw een schip aangevallen met drones. Dat melden de plaatselijke autoriteiten. Het zou gaan om een vrachtschip dat onder de Maltese vlag vaart. Eerder vond al een explosie plaats op een Russisch oorlogsschip dat daar lag aangemeerd.",
+   "onderwerp": "Midden-Oosten",
+   "link": "https://vrtnws.be/p.LNW3Gx8A7",
+   "score": 6
+  },
+  {
    "titel": "\"Ontoelaatbaar\": reisbureaus woedend over stakingsaanzegging bij Skeyes",
    "samenvatting": "",
    "onderwerp": "Economie",
@@ -13,6 +27,13 @@
    "onderwerp": "Midden-Oosten",
    "link": "https://vrtnws.be/p.11p55wXpq",
    "score": 6
+  },
+  {
+   "titel": "\"Ze brengen mensen in de problemen die er niets aan kunnen doen\": Eline, Nico en Guido getroffen door staking bij luchtverkeersleider Skeyes",
+   "samenvatting": "\"Amper 12 uur voor we zouden vertrekken, kregen we pas een bericht dat er alweer gestaakt wordt. Ik vind dat spijtig.\" Dat zegt Guido Nachtergaele, een van de tienduizenden mensen die getroffen is door de staking bij luchtverkeersleider Skeyes maandag. De reizigers die VRT NWS sprak, hebben er maar weinig begrip voor. \"Ze brengen mensen ermee in de problemen die er niets aan kunnen doen.\"",
+   "onderwerp": "Binnenland",
+   "link": "https://vrtnws.be/p.ZWK4aMkeB",
+   "score": 5
   },
   {
    "titel": "Theresa May \"verbijsterd\" over toenadering tussen VK en EU: \"Brexit gewoon aanvaarden en doorgaan\"",
@@ -34,30 +55,13 @@
    "onderwerp": "Binnenland",
    "link": "https://vrtnws.be/p.3BwjN6vlb",
    "score": 5
-  },
-  {
-   "titel": "\"Onverantwoord en volledig disproportioneel\": Luchtvaartsector misnoegd over staking luchtverkeersleiders",
-   "samenvatting": "De luchtvaartsector reageert misnoegd op de staking van de luchtverkeersleiders bij Skeyes maandag. BAR Belgium, een beroepsfederatie van een 25-tal luchtvaartmaatschappijen actief in ons land, noemt de vakbondsactie \"buitensporig, onverantwoord en volledig disproportioneel\". Brussels Airlines en Brussels Airport betreuren de \"extreem late communicatie\" en de impact op de passagiers.",
-   "onderwerp": "Binnenland",
-   "link": "https://vrtnws.be/p.nwv64k3DN",
-   "score": 5
-  },
-  {
-   "titel": "Waterschildpad plant zich voor het eerst in het wild voort in Nederland door warmer klimaat: \"Gevaar voor lokale biodiversiteit\"",
-   "samenvatting": "Voor het eerst hebben waterschildpadden zich in het wild Nederland voortgeplant. Tot nu toe bleek het klimaat te koud voor de exoot om in het wild voor nakomelingen te zorgen. Door de klimaatopwarming, en dus het warmere water, lijkt dat nu toch mogelijk. En dat is geen goed nieuws voor de lokale biodiversiteit.",
-   "onderwerp": "Nederland",
-   "link": "https://vrtnws.be/p.oLqyybqPq",
-   "score": 4
-  },
-  {
-   "titel": "Italiaanse juwelenontwerper en zakenman Paolo Bulgari (89) overleden",
-   "samenvatting": "De Italiaanse juwelenontwerper en zakenman Paolo Bulgari is op 89-jarige leeftijd overleden. Dat heeft het gelijknamige luxemerk bekendgemaakt. Hij was sinds 1984 voorzitter van de Bulgari Group en speelde een belangrijke rol in de groei van het juwelenhuis.",
-   "onderwerp": "Europa",
-   "link": "https://vrtnws.be/p.GvoRvmXxn",
-   "score": 4
   }
  ],
  "quotes": [
+  {
+   "tekst": "Good judgment comes from experience, and experience comes from bad judgment.",
+   "auteur": "Rita Mae Brown"
+  },
   {
    "tekst": "All fixed set patterns are incapable of adaptability or pliability. The truth is outside of all fixed patterns.",
    "auteur": "Bruce Lee"
@@ -69,20 +73,16 @@
   {
    "tekst": "Make a difference about something other than yourselves.",
    "auteur": "Toni Morrison"
-  },
-  {
-   "tekst": "Laziness may appear attractive, but work gives satisfaction.",
-   "auteur": "Anne Frank"
   }
  ],
  "feitje": {
   "taal": "en",
-  "dag": 22,
+  "dag": 23,
   "maand": "november",
-  "jaar": 1574,
-  "tekst": "Juan Fernández, a Spanish explorer, discovered an archipelago that now bears his name off the coast of Chile.",
-  "titel": "Juan Fernández (explorer)",
-  "uitleg": "Juan Fernández was a Spanish explorer and navigator in the Pacific regions of the Viceroyalty of Peru and Captaincy General of Chile west of colonial South America. He is best known for the discovery of a fast maritime route from Callao (Peru) to Valparaíso (Chile) as well as for the discovery of the Juan Fernández Islands off the coast of Chile."
+  "jaar": 1924,
+  "tekst": "The New York Times published evidence from Edwin Hubble (pictured) stating that the Andromeda Nebula, previously believed to be part of the Milky Way, is in fact another galaxy.",
+  "titel": "The New York Times",
+  "uitleg": "The New York Times (NYT) is a newspaper based in Manhattan, New York City. The New York Times covers domestic, national, and international news, and publishes opinion pieces and reviews. One of the longest-running newspapers in the United States, the Times serves as one of the country's newspapers of record. As of June 2026, The New York Times had 13.35 million total subscribers: 550,000 print and 12.8 million digital, both the highest numbers for any newspaper in the United States by a significant margin. The New York Times is published by the New York Times Company. Since 1896, the company has been chaired by the Ochs-Sulzberger family."
  },
- "datum": "2026-11-22"
+ "datum": "2026-11-23"
 }
