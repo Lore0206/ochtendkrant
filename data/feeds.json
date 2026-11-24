@@ -1,20 +1,6 @@
 {
  "nieuws": [
   {
-   "titel": "Partijvoorzitters morgen om 16 uur bij premier De Wever verwacht, eindejaar is deadline voor akkoord",
-   "samenvatting": "",
-   "onderwerp": "Politiek",
-   "link": "https://vrtnws.be/p.nwvwmBOBR",
-   "score": 9
-  },
-  {
-   "titel": "Nieuwe staatsbon op 1 jaar heeft nettorente van net boven 2 procent",
-   "samenvatting": "De nieuwe 1-jarige staatsbon heeft een nettorendement van 2,065 procent. Dat verneemt onze redactie bij het Federaal Agentschap van de Schuld. Voor de 5-jarige staatsbon is de rente 2,52 procent netto en op 10 jaar is het 2,87 procent. Intekenen op de nieuwe staatsbons kan vanaf woensdag.",
-   "onderwerp": "Economie",
-   "link": "https://vrtnws.be/p.OvkbJMA6o",
-   "score": 9
-  },
-  {
    "titel": "Olieprijzen zakken ondanks aanhoudende oorlogsdreiging in Midden-Oosten",
    "samenvatting": "",
    "onderwerp": "Economie",
@@ -22,18 +8,25 @@
    "score": 8
   },
   {
-   "titel": "Van \"behoorlijk waanzinnig\" tot \"onuitstaanbaar\": hoe Vandenbroucke vanochtend opnieuw kwaad bloed zette bij zijn collega's",
+   "titel": "Van \"behoorlijk waanzinnig\" tot \"onuitstaanbaar\": hoe Vandenbroucke opnieuw kwaad bloed zette bij zijn collega's",
    "samenvatting": "Frank Vandenbroucke (Vooruit) blijft kop van Jut binnen de kern van de regering. Kort voor de mislukte vergadering van vanochtend beschuldigde Maxime Prévot (Les Engagés) hem ervan nepnieuws te verspreiden. \"Hij vroeg zelfs excuses van de andere partijen\", stelt David Clarinval (MR). Vandenbroucke spreekt dat tegen. “Wel integendeel: ik heb gezegd dat het geen zin heeft om van elkaar excuses te eisen.”",
    "onderwerp": "Politiek",
    "link": "https://vrtnws.be/p.43p5JYZa1",
    "score": 8
   },
   {
-   "titel": "Zelensky bevestigt aanval op Russisch oorlogsschip in Libië: \"Oekraïne twijfelt niet meer om inspanningen op te drijven\"",
-   "samenvatting": "De aanvallen op Russische schepen in de Libische haven van Benghazi, zijn uitgevoerd door Oekraïne. Dat heeft de Oekraïense president Volodymyr Zelensky bevestigd in een bericht op X. Samen met de aanvallen op een vrachtschip in de Finse Golf en een luchtalarm in de Russische enclave Kaliningrad, toont dat hoe ver het bereik van het Oekraïense leger ligt. \"Elk Russisch marineschip, waar het ook ligt, is nu een direct doelwit\", zegt defensie-expert Jens Franssen.",
-   "onderwerp": "Rusland",
-   "link": "https://vrtnws.be/p.kQO6WqBPa",
-   "score": 8
+   "titel": "Oppositiepartijen niet te spreken over Antwerpse besparingen: \"Inwoners kunnen echt niet nog meer betalen\"",
+   "samenvatting": "Van \"ongeloof\" tot \"dit gaat de Antwerpenaar voelen\". De Antwerpse oppositiepartijen zijn niet te spreken over de besparingen die het stadsbestuur wil doorvoeren. De stad wil van 2027 tot 2031 in totaal 563,8 miljoen euro besparen omdat er minder geld van Vlaanderen komt en door hogere kosten voor onder meer personeel en energie.",
+   "onderwerp": "Politiek",
+   "link": "https://vrtnws.be/p.11pqmP5v7",
+   "score": 6
+  },
+  {
+   "titel": "De AI-goeroe met het lederen jasje die zijn comeback maakt: dit moet u weten over Nvidia-topman Jensen Huang",
+   "samenvatting": "De AI-goeroe is terug. Nog geen 2 weken geleden leek het doek gevallen voor Nvidia-topman Jensen Huang (63) na 2 affaires, maar nu keert hij terug als CEO van Nvidia. Van Taiwan naar de Verenigde Staten en van toiletten poetsen tot het gezicht van de AI-revolutie: dit moet je over hem weten.",
+   "onderwerp": "Economie",
+   "link": "https://vrtnws.be/p.0YpdMVLbQ",
+   "score": 5
   },
   {
    "titel": "Parket vraagt vrijspraak voor voormalige barman van Antwerps café die terechtstaat voor verkrachting: \"Onvoldoende bewijs\"",
@@ -43,11 +36,11 @@
    "score": 5
   },
   {
-   "titel": "Agent (36) van speciale eenheden overleden die in 2024 zwaargewond raakte bij schietpartij nabij Charleroi",
-   "samenvatting": "Een agent van de speciale eenheden die in maart 2024 zwaargewond raakte bij een schietpartij in Lodelinsart, is overleden. Dat melden de Directie van de Speciale Eenheden (DSU) en de federale politie in een persbericht. Bij de schietpartij kwamen ook een andere agent en de verdachte om het leven.",
-   "onderwerp": "Justitie",
-   "link": "https://vrtnws.be/p.aDebJn66d",
-   "score": 5
+   "titel": "Van maffiajager tot verdachte: dood van gewezen politiebaas Gianni De Gennaro beroert gemoederen in Italië",
+   "samenvatting": "In Italië beheerst de dood van oud-politiebaas Gianni De Gennaro al dagenlang het nieuws. De man werd afgelopen weekend dood aangetroffen in zijn buitenverblijf in Toscane. De Gennaro was een van de bekendste maffiajagers van het land, maar werd er nu zélf van verdacht een onderzoek naar de maffia te hebben gesaboteerd.",
+   "onderwerp": "Europa",
+   "link": "https://vrtnws.be/p.KK8MRmBjL",
+   "score": 4
   },
   {
    "titel": "Aura, peak of wesh? Ontdek de kanshebbers voor het Kinder- en Tienerwoord van het Jaar",
@@ -55,9 +48,20 @@
    "onderwerp": "",
    "link": "https://vrtnws.be/p.OvkL7xYvZ",
    "score": 4
+  },
+  {
+   "titel": "Kan proces tegen ex-politiebaas Glenn Audenaert na 15 jaar eindelijk beginnen?",
+   "samenvatting": "In Dendermonde starten vandaag - normaal gezien - de pleidooien in het proces tegen Glenn Audenaert, de gewezen topman van de Brusselse gerechtelijke politie. Hij wordt onder meer vervolgd voor passieve corruptie, witwassen en schriftvervalsing. De zaak sleept al meer dan 15 jaar aan.",
+   "onderwerp": "Justitie",
+   "link": "https://vrtnws.be/p.11p53eqyp",
+   "score": 3
   }
  ],
  "quotes": [
+  {
+   "tekst": "No man was ever wise by chance.",
+   "auteur": "Lucius Annaeus Seneca"
+  },
   {
    "tekst": "Good judgment comes from experience, and experience comes from bad judgment.",
    "auteur": "Rita Mae Brown"
@@ -69,20 +73,16 @@
   {
    "tekst": "Good friends, good books and a sleepy conscience: this is the ideal life.",
    "auteur": "Mark Twain"
-  },
-  {
-   "tekst": "Make a difference about something other than yourselves.",
-   "auteur": "Toni Morrison"
   }
  ],
  "feitje": {
   "taal": "en",
-  "dag": 23,
+  "dag": 24,
   "maand": "november",
-  "jaar": 1924,
-  "tekst": "The New York Times published evidence from Edwin Hubble (pictured) stating that the Andromeda Nebula, previously believed to be part of the Milky Way, is in fact another galaxy.",
-  "titel": "The New York Times",
-  "uitleg": "The New York Times (NYT) is a newspaper based in Manhattan, New York City. The New York Times covers domestic, national, and international news, and publishes opinion pieces and reviews. One of the longest-running newspapers in the United States, the Times serves as one of the country's newspapers of record. As of June 2026, The New York Times had 13.35 million total subscribers: 550,000 print and 12.8 million digital, both the highest numbers for any newspaper in the United States by a significant margin. The New York Times is published by the New York Times Company. Since 1896, the company has been chaired by the Ochs-Sulzberger family."
+  "jaar": 1922,
+  "tekst": "Irish Civil War: Irish nationalist author Erskine Childers was executed by the Irish Free State for illegally carrying a semi-automatic pistol.",
+  "titel": "Irish Civil War",
+  "uitleg": "The Irish Civil War was a conflict that followed the Irish War of Independence and accompanied the establishment of the Irish Free State, an entity independent from the United Kingdom but within the British Empire."
  },
- "datum": "2026-11-23"
+ "datum": "2026-11-24"
 }
