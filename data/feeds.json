@@ -1,6 +1,27 @@
 {
  "nieuws": [
   {
+   "titel": "EU-top eindigt zonder akkoord over meerjarenbegroting",
+   "samenvatting": "De 27 staatshoofden en regeringsleiders van de Europese Unie zijn zonder akkoord over de meerjarenbegroting uit elkaar gegaan. De meningen liggen nog ver uit elkaar: sommige landen willen meer besparen, andere net minder. Half december komen de Europese leiders opnieuw bij mekaar.",
+   "onderwerp": "Europese Unie",
+   "link": "https://vrtnws.be/p.Nv3dwxaL8",
+   "score": 9
+  },
+  {
+   "titel": "Militaire junta in Guinee-Bissau stelt verkiezingen voor president en parlement 2 jaar uit",
+   "samenvatting": "De militaire junta in Guinee-Bissau, in West-Afrika, heeft de presidents- en parlementsverkiezingen met 2 jaar uitgesteld, tot 26 november 2028. Dat blijkt uit een presidentieel decreet dat het Franse persagentschap AFP kon inzien. Normaal gezien hadden de verkiezingen op 6 december 2026 moeten plaatsvinden.",
+   "onderwerp": "Afrika",
+   "link": "https://vrtnws.be/p.RaJRmdJKX",
+   "score": 9
+  },
+  {
+   "titel": "VRT NWS keert terug naar Ceuta, waar de migratiecrisis een etterende wonde blijft",
+   "samenvatting": "Vier maanden na de massale toestroom van migranten vanuit Marokko blijft de crisis flink nazinderen in Ceuta. De stad likt nog altijd zijn wonden, maar Ceuta heeft ook van migratie voor het eerst echt een hoofdthema van de Spaanse verkiezingscampagne gemaakt. En daar spint vooral het uiterst rechtse Vox garen bij. VRT NWS keerde terug naar de stad.",
+   "onderwerp": "Europa",
+   "link": "https://vrtnws.be/p.6KpjjLKwQ",
+   "score": 8
+  },
+  {
    "titel": "Deze besparingen op de loonindex waren de spreekwoordelijke druppel voor Vooruit",
    "samenvatting": "Niet raken aan de index: dat was een belangrijke voorwaarde die Vooruit-voorzitter Conner Rousseau naar voren schoof voor hij weer verder onderhandelt over de begroting. Wat lag dan precies op tafel over de index dat de socialisten zo boos maakte? Welke speelruimte hebben de onderhandelaars nog?",
    "onderwerp": "Politiek",
@@ -8,56 +29,39 @@
    "score": 8
   },
   {
-   "titel": "Premier roept maandag partijvoorzitters bijeen, Vooruit komt enkel na garanties voor index en miljonairstaks",
+   "titel": "Johan Vande Lanotte: \"Premier moet index-eis van Vooruit respecteren, net zoals hij dat deed met btw-eis van MR\"",
    "samenvatting": "",
    "onderwerp": "Politiek",
    "link": "https://vrtnws.be/p.nwvwmBOBR",
    "score": 7
   },
   {
-   "titel": "Israël dreigt met nieuwe ontruiming van Noord-Gaza en verdrijving van miljoen Palestijnen naar het zuiden",
-   "samenvatting": "",
-   "onderwerp": "Midden-Oosten",
-   "link": "https://vrtnws.be/p.xZW3NNq9N",
+   "titel": "Europese Unie begaat \"strategische vergissing\" als ze bespaart op begroting, waarschuwt Macron",
+   "samenvatting": "De Europese Unie is \"een strategische vergissing\" aan het begaan met de voorgestelde besparingen op haar volgende meerjarenbegroting. Daarvoor waarschuwt de Franse president Emmanuel Macron op de Europese top in Brussel. De Europese lidstaten buigen zich daar over de begroting voor de jaren 2028-2034.",
+   "onderwerp": "Europese Unie",
+   "link": "https://vrtnws.be/p.bDodOqww5",
    "score": 7
   },
   {
-   "titel": "Pensioencoalitie en PVDA trekken naar Grondwettelijk Hof tegen pensioenhervorming",
-   "samenvatting": "Een coalitie van 20 organisaties, vakbonden en middenveld, dient met 75 officiële verzoekers een annulatieverzoek in tegen de pensioenwet van 30 mei. Ook oppositiepartij PVDA laat weten een verzoekschrift in te dienen, gesteund door 26.101 Belgen",
-   "onderwerp": "Binnenland",
-   "link": "https://vrtnws.be/p.KK8Y9dljm",
-   "score": 7
-  },
-  {
-   "titel": "CEO van De Lijn Ann Schoubs op weg naar exit? \"Ze wordt afgerekend omdat ze kritisch is geweest voor Vlaamse regering\"",
-   "samenvatting": "De Vlaamse regering is niet van plan om het mandaat van Ann Schoubs als directeur-generaal bij De Lijn te verlengen. Dat heeft de topvrouw gezegd tijdens de raad van bestuur. Bij de vakbonden leeft het gevoel dat Schoubs wordt afgerekend omdat ze te kritisch is geweest tegenover de Vlaamse regering. Volgens de woordvoerder van bevoegd minister Annick De Ridder (N-VA) loopt haar evaluatie nog. Oppositiepartijen Groen en Anders waren scherp in de bevoegde commissie in het Vlaams Parlement.",
-   "onderwerp": "Mobiliteit",
-   "link": "https://vrtnws.be/p.43pjxPRQk",
-   "score": 5
-  },
-  {
-   "titel": "Hackers stelen bankgegevens en adressen van klanten van energieleveranciers Eneco en Energie.be",
-   "samenvatting": "Bij energieleveranciers Eneco en Energie.be hebben hackers klantgegevens gestolen. Beide energieleveranciers hebben de getroffen klanten verwittigd. Er zijn onder meer bankgegevens, adressen en telefoonnummers gehackt.",
-   "onderwerp": "Technologie & Wetenschap",
-   "link": "https://vrtnws.be/p.jGkmaPjyk",
-   "score": 5
-  },
-  {
-   "titel": "300 huiszoekingen in 12 landen in grote Europese witwaszaak, ook 2 arrestaties in België",
-   "samenvatting": "In een grootschalige Europese actie tegen witwassen zijn in België twee verdachten opgepakt. Dat meldt het Europees openbaar ministerie (EPPO). Via complexe btw-fraude zou een bende minstens 120 miljoen euro hebben witgewassen.",
-   "onderwerp": "Justitie",
-   "link": "https://vrtnws.be/p.6Kpj4yp0d",
-   "score": 5
-  },
-  {
-   "titel": "Spanjaard Pablo Hernández de Cos volgt Christine Lagarde op als voorzitter van Europese Centrale Bank",
-   "samenvatting": "De Spanjaard Pablo Hernández de Cos wordt de nieuwe voorzitter van de Europese Centrale Bank (ECB). Dat is beslist op de Europese top. Hij volgt de Française Christine Lagarde op.",
+   "titel": "Aandeel Bpost 3 keer minder waard dan prior-zegel, toch blijft CEO optimistisch: \"Beste leverancier in pakjesmarkt\"",
+   "samenvatting": "Hoewel de beurskoers van Bpost is gekelderd tot 0,74 euro per aandeel, blijft CEO Chris Peeters optimistisch over de toekomst van het postbedrijf. Dat zegt hij in VRT NWS Terzake. \"Bpost zit in volle transformatie van klassiek postbedrijf naar een onderneming die haar aandeel heeft in de commerciële pakjesmarkt.\"",
    "onderwerp": "Economie",
-   "link": "https://vrtnws.be/p.jGkmJXN9k",
+   "link": "https://vrtnws.be/p.JN40onn68",
+   "score": 5
+  },
+  {
+   "titel": "Europees cyberproject voor 21 gemeenten in Oost-Vlaanderen en Vlaams-Brabant loopt een jaar langer",
+   "samenvatting": "Het Europese project rond cyberweerbaarheid voor 21 Vlaamse gemeenten is met een jaar verlengd. Dat zegt Joke Schauvliege (CD&V), gedeputeerde bij de provincie Oost-Vlaanderen. Het gaat om 15 gemeenten in Oost-Vlaanderen en 6 in Vlaams-Brabant. Dankzij het project beschikken de lokale besturen over een back-upsysteem bij een cyberaanval.",
+   "onderwerp": "Binnenland",
+   "link": "https://vrtnws.be/p.E1djppL7W",
    "score": 5
   }
  ],
  "quotes": [
+  {
+   "tekst": "The best way to have a good idea is to have a lot of ideas.",
+   "auteur": "Linus Pauling"
+  },
   {
    "tekst": "The soul becomes dyed with the color of its thoughts.",
    "auteur": "Marcus Aurelius"
@@ -69,20 +73,16 @@
   {
    "tekst": "No man was ever wise by chance.",
    "auteur": "Lucius Annaeus Seneca"
-  },
-  {
-   "tekst": "Good judgment comes from experience, and experience comes from bad judgment.",
-   "auteur": "Rita Mae Brown"
   }
  ],
  "feitje": {
   "taal": "en",
-  "dag": 26,
+  "dag": 27,
   "maand": "november",
-  "jaar": 1940,
-  "tekst": "The Iron Guard killed 64 political detainees at a penitentiary near Bucharest and followed up with several high-profile assassinations, including that of former Romanian prime minister Nicolae Iorga.",
-  "titel": "Iron Guard",
-  "uitleg": "The Iron Guard was a far-right, revolutionary, fascist paramilitary organization and political party active in the Kingdom of Romania during the interwar period and the Second World War. Founded in 1927 by Corneliu Zelea Codreanu as the Legion of the Archangel Michael or the Legionary Movement, the movement was strongly anti-democratic, anti-communist, and antisemitic, and its ideology inspired both political violence and forms of Christian terrorism. It differed from other European far-right movements of the period due to its spiritual basis, as the Iron Guard was deeply imbued with Romanian Orthodox Christian mysticism."
+  "jaar": 1989,
+  "tekst": "A bomb placed by the Medellín Cartel in an attempt to kill Colombian presidential candidate César Gaviria destroyed Avianca Flight 203, killing all 107 people on board, excluding Gaviria, who was not on the flight.",
+  "titel": "Medellín Cartel",
+  "uitleg": "The Medellín Cartel was a confederation of Colombian drug trafficking organizations based primarily in Medellín, Colombia, that played a central role in the expansion of the international cocaine trade during the late 1970s and 1980s. Rather than a single hierarchical organization, contemporary law-enforcement assessments and subsequent scholarship describe the cartel as a network of semi-autonomous traffickers who cooperated in production, transportation, financing, and enforcement while retaining independent control over their respective operations."
  },
- "datum": "2026-11-26"
+ "datum": "2026-11-27"
 }
