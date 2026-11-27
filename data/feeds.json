@@ -1,6 +1,13 @@
 {
  "nieuws": [
   {
+   "titel": "Inflatie in november daalt naar 5,09 procent, vooral energie maakt leven duurder",
+   "samenvatting": "De inflatie in november is gedaald tot 5,09 procent. Dat meldt de FOD Economie. In oktober lag dat cijfer nog op 5,26 procent. Vooral energie vuurt de stijging van de levensduurte aan. Zonder energieproducten bedraagt de kerninflatie voor november 2,47 procent.",
+   "onderwerp": "Economie",
+   "link": "https://vrtnws.be/p.RaJ7NXpOX",
+   "score": 9
+  },
+  {
    "titel": "EU-top eindigt zonder akkoord over meerjarenbegroting",
    "samenvatting": "De 27 staatshoofden en regeringsleiders van de Europese Unie zijn zonder akkoord over de meerjarenbegroting uit elkaar gegaan. De meningen liggen nog ver uit elkaar: sommige landen willen meer besparen, andere net minder. Half december komen de Europese leiders opnieuw bij mekaar.",
    "onderwerp": "Europese Unie",
@@ -8,24 +15,10 @@
    "score": 9
   },
   {
-   "titel": "Militaire junta in Guinee-Bissau stelt verkiezingen voor president en parlement 2 jaar uit",
-   "samenvatting": "De militaire junta in Guinee-Bissau, in West-Afrika, heeft de presidents- en parlementsverkiezingen met 2 jaar uitgesteld, tot 26 november 2028. Dat blijkt uit een presidentieel decreet dat het Franse persagentschap AFP kon inzien. Normaal gezien hadden de verkiezingen op 6 december 2026 moeten plaatsvinden.",
-   "onderwerp": "Afrika",
-   "link": "https://vrtnws.be/p.RaJRmdJKX",
-   "score": 9
-  },
-  {
    "titel": "VRT NWS keert terug naar Ceuta, waar de migratiecrisis een etterende wonde blijft",
    "samenvatting": "Vier maanden na de massale toestroom van migranten vanuit Marokko blijft de crisis flink nazinderen in Ceuta. De stad likt nog altijd zijn wonden, maar Ceuta heeft ook van migratie voor het eerst echt een hoofdthema van de Spaanse verkiezingscampagne gemaakt. En daar spint vooral het uiterst rechtse Vox garen bij. VRT NWS keerde terug naar de stad.",
    "onderwerp": "Europa",
    "link": "https://vrtnws.be/p.6KpjjLKwQ",
-   "score": 8
-  },
-  {
-   "titel": "Deze besparingen op de loonindex waren de spreekwoordelijke druppel voor Vooruit",
-   "samenvatting": "Niet raken aan de index: dat was een belangrijke voorwaarde die Vooruit-voorzitter Conner Rousseau naar voren schoof voor hij weer verder onderhandelt over de begroting. Wat lag dan precies op tafel over de index dat de socialisten zo boos maakte? Welke speelruimte hebben de onderhandelaars nog?",
-   "onderwerp": "Politiek",
-   "link": "https://vrtnws.be/p.qENyNEyPl",
    "score": 8
   },
   {
@@ -43,17 +36,24 @@
    "score": 7
   },
   {
-   "titel": "Aandeel Bpost 3 keer minder waard dan prior-zegel, toch blijft CEO optimistisch: \"Beste leverancier in pakjesmarkt\"",
-   "samenvatting": "Hoewel de beurskoers van Bpost is gekelderd tot 0,74 euro per aandeel, blijft CEO Chris Peeters optimistisch over de toekomst van het postbedrijf. Dat zegt hij in VRT NWS Terzake. \"Bpost zit in volle transformatie van klassiek postbedrijf naar een onderneming die haar aandeel heeft in de commerciële pakjesmarkt.\"",
-   "onderwerp": "Economie",
-   "link": "https://vrtnws.be/p.JN40onn68",
+   "titel": "Gerecht in Nederland start onderzoek naar discriminatie na Pano-reportage over Active Clubs",
+   "samenvatting": "In Nederland heeft het openbaar ministerie een onderzoek opgestart na de reportage van VRT NWS Pano en Zembla over Active Clubs. Het gerecht gaat na of die verenigingen activiteiten steunen gericht op discriminatie.",
+   "onderwerp": "Justitie",
+   "link": "https://vrtnws.be/p.ew4LpX0NE",
    "score": 5
   },
   {
-   "titel": "Europees cyberproject voor 21 gemeenten in Oost-Vlaanderen en Vlaams-Brabant loopt een jaar langer",
-   "samenvatting": "Het Europese project rond cyberweerbaarheid voor 21 Vlaamse gemeenten is met een jaar verlengd. Dat zegt Joke Schauvliege (CD&V), gedeputeerde bij de provincie Oost-Vlaanderen. Het gaat om 15 gemeenten in Oost-Vlaanderen en 6 in Vlaams-Brabant. Dankzij het project beschikken de lokale besturen over een back-upsysteem bij een cyberaanval.",
-   "onderwerp": "Binnenland",
-   "link": "https://vrtnws.be/p.E1djppL7W",
+   "titel": "Koen Kennis genoemd als vicegouverneur bij Nationale Bank, maar \"voorzichtigheid blijft geboden\"",
+   "samenvatting": "Antwerps schepen Koen Kennis (N-VA) zou voorgedragen zijn als directielid en vicegouverneur bij de Nationale Bank. Dat schrijven de kranten De Tijd en Gazet van Antwerpen. \"Zijn naam circuleert, maar de Nationale Bank moet nog zijn goedkeuring geven en de N-VA is voorzichtig om zijn naam te laten vallen\", zegt Michaël Van Droogenbroeck, politiek journalist bij VRT NWS.",
+   "onderwerp": "Economie",
+   "link": "https://vrtnws.be/p.jGkmpd6bx",
+   "score": 5
+  },
+  {
+   "titel": "Overgangsmaatregel voor werkloosheidsuitkering van mantelzorgers wordt verlengd met maximaal 36 maanden",
+   "samenvatting": "Werkloze mantelzorgers met een vrijstelling zullen langer hun uitkering kunnen behouden. De federale regering is het erover eens om de overgangsregeling, die voor velen eind dit jaar afloopt, nog eens met maximaal 36 maanden te verlengen. Dat werd in verschillende regeringskringen vernomen, zo meldt Belga.",
+   "onderwerp": "Samenleving",
+   "link": "https://vrtnws.be/p.RaJRKWZKM",
    "score": 5
   }
  ],
