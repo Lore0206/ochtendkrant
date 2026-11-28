@@ -1,6 +1,13 @@
 {
  "nieuws": [
   {
+   "titel": "Kredietbeoordelaar S&P zet licht op oranje voor Frankrijk",
+   "samenvatting": "De Amerikaanse kredietbeoordelaar Standard & Poor’s (S&P) behoudt de kredietrating van Frankrijk op A+, maar geeft die een ‘negatief vooruitzicht' mee. Het licht wordt op oranje gezet omdat het begrotingstekort en de staatsschuld van onze zuiderburen oplopen. Minister van Financiën Roland Lescure ziet dit als een signaal om de begroting onder de 5 procent van het bruto binnenlands product (bbp) te krijgen.",
+   "onderwerp": "Economie",
+   "link": "https://vrtnws.be/p.lObJndBvk",
+   "score": 9
+  },
+  {
    "titel": "80.000 werklozen krijgen binnenkort alsnog werkloosheidsuitkering gestort",
    "samenvatting": "80.000 werklozen die door de hervorming van de werkloosheid in de tijd hun uitkering hebben verloren, krijgen de komende maanden hun werkloosheidsuitkering alsnog op hun rekening gestort. Dat verneemt persagentschap Belga bij de Rijksdienst voor Arbeidsvoorziening (RVA).",
    "onderwerp": "Economie",
@@ -13,6 +20,20 @@
    "onderwerp": "Politiek",
    "link": "https://vrtnws.be/p.JN45VlRpG",
    "score": 8
+  },
+  {
+   "titel": "Artsen zonder Grenzen: \"2 collega's gedood bij Israëlische aanval op ziekenhuis in Gaza\"",
+   "samenvatting": "",
+   "onderwerp": "Midden-Oosten",
+   "link": "https://vrtnws.be/p.xZW3NNq9N",
+   "score": 7
+  },
+  {
+   "titel": "\"Een stap achteruit in beschaving\": Demir wil strenger optreden tegen minder tolerantie voor holebi's in onderwijs",
+   "samenvatting": "\"Er is een brede coalitie van haatdragers tegen holebirechten. Dat betekent dat er werk aan de winkel is in de opvoeding en het onderwijs.\" Dat zegt Vlaams minister van Onderwijs Zuhal Demir (N-VA) in een reactie op dalende tolerantie van leerlingen tegenover LGBTQ+-personen. Demir legt ook verantwoordelijkheid bij de ouders en wil het tucht- en antipestbeleid op school aanscherpen.",
+   "onderwerp": "Onderwijs",
+   "link": "https://vrtnws.be/p.Ovk5mB1eZ",
+   "score": 6
   },
   {
    "titel": "Code geel voor griep, COVID en verkoudheden: \"Blijf thuis als je je ziek voelt\"",
@@ -29,35 +50,18 @@
    "score": 5
   },
   {
-   "titel": "Cultuursector betoogt tegen besparingen in Brussel, ook VRT-personeel doet mee",
-   "samenvatting": "Op het Martelaarsplein in Brussel hebben een duizendtal mensen uit de cultuur-, erfgoed- en welzijnssector actie gevoerd tegen de besparingen van de Vlaamse regering. Ook VRT-medewerkers waren aanwezig. De publieke omroep moet boven op de eerder aangekondigde besparingen van 16 miljoen euro nog eens 10 miljoen euro extra besparen.",
-   "onderwerp": "Binnenland",
-   "link": "https://vrtnws.be/p.bDoLB50AM",
-   "score": 5
-  },
-  {
-   "titel": "Poolse grenswacht zet twee verdwaalde honden over de Russische grens",
-   "samenvatting": "Poolse grenswachters hebben 2 verdwaalde honden uitgezet naar Rusland. De dieren waren per ongeluk over de grens met Kaliningrad gelopen, de Russische exclave tussen Polen en Litouwen.",
-   "onderwerp": "Europa",
-   "link": "https://vrtnws.be/p.dLR4kDQ1L",
+   "titel": "Zelensky vergelijkt Poetin met Hitler: waarom gaat vergelijking (niet) op?",
+   "samenvatting": "De vergelijking die de Oekraïense president Zelensky maakt tussen Poetin en Hitler is niet correct, maar wel legitiem. Dat vindt politiek filosoof Stefan Rummens (KUL). Volgens hem zijn er gelijkenissen tussen Hitler en Poetin. \"Er zijn argumenten om het regime van Poetin een hedendaags fascisme te noemen.\"",
+   "onderwerp": "Rusland",
+   "link": "https://vrtnws.be/p.0YplVvexx",
    "score": 4
-  },
-  {
-   "titel": "Straathoekwerkers op speelplaats en agenten rond de school: extra maatregelen voor heropening Don Bosco in Genk",
-   "samenvatting": "De politie en gemeenschapsdienst zullen maandag aanwezig zijn bij de heropening van Don Bosco in Genk. Dat is beslist op een overleg tussen de stad en de schooldirectie. De politie zal in de omgeving rond de school postvatten. De Genkse straathoekwerkers zullen ook op de speelplaats staan. Er komt ook extra psychologische begeleiding voor de leerkrachten.",
-   "onderwerp": "Onderwijs",
-   "link": "https://vrtnws.be/p.6KpeKk3Q4",
-   "score": 4
-  },
-  {
-   "titel": "Federaal parket onderzoekt linken tussen ons land en dodelijke raid in Overasselt, in Nederland",
-   "samenvatting": "Het federaal parket bij ons voert een onderzoek naar de dodelijke aanval op het huis van een drugscrimineel in Overasselt, in Nederland, begin september. Dat bevestigt het parket aan VRT NWS. De 3 verdachten die in ons land werden opgepakt, zijn intussen overgeleverd aan de Nederlandse justitie.",
-   "onderwerp": "Justitie",
-   "link": "https://vrtnws.be/p.RaJ7O8pQX",
-   "score": 3
   }
  ],
  "quotes": [
+  {
+   "tekst": "We must use time as a tool, not as a couch.",
+   "auteur": "John F. Kennedy"
+  },
   {
    "tekst": "The best way to have a good idea is to have a lot of ideas.",
    "auteur": "Linus Pauling"
@@ -69,20 +73,16 @@
   {
    "tekst": "Suffering passes, while love is eternal. That's a gift that you have received from God. Don't waste it.",
    "auteur": "Laura Ingalls Wilder"
-  },
-  {
-   "tekst": "No man was ever wise by chance.",
-   "auteur": "Lucius Annaeus Seneca"
   }
  ],
  "feitje": {
   "taal": "en",
-  "dag": 27,
+  "dag": 28,
   "maand": "november",
-  "jaar": 1989,
-  "tekst": "A bomb placed by the Medellín Cartel in an attempt to kill Colombian presidential candidate César Gaviria destroyed Avianca Flight 203, killing all 107 people on board, excluding Gaviria, who was not on the flight.",
-  "titel": "Medellín Cartel",
-  "uitleg": "The Medellín Cartel was a confederation of Colombian drug trafficking organizations based primarily in Medellín, Colombia, that played a central role in the expansion of the international cocaine trade during the late 1970s and 1980s. Rather than a single hierarchical organization, contemporary law-enforcement assessments and subsequent scholarship describe the cartel as a network of semi-autonomous traffickers who cooperated in production, transportation, financing, and enforcement while retaining independent control over their respective operations."
+  "jaar": 1966,
+  "tekst": "In a military coup, Michel Micombero abolished the Burundian monarchy and declared the country a republic with himself as the inaugural president.",
+  "titel": "Michel Micombero",
+  "uitleg": "Michel Micombero was a Burundian military officer and politician who ruled the country as de facto military dictator for the decade between 1966 and 1976. He was the last Prime Minister of the Kingdom of Burundi from July to November 1966, and the first President of the country from November 1966 until his overthrow in 1976."
  },
- "datum": "2026-11-27"
+ "datum": "2026-11-28"
 }
